@@ -1,31 +1,27 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-public class Product:ECommerece.Domain.BaseModel.BaseClass
+
+namespace ECommerece.Domain.Entities
 {
-    public int Id { get; set; }
+    public class Product : BaseModel.BaseClass<int>
+    {
+        public required string Label { get; set; }
 
-    public required string Label { get; set; }
+        public string? Description { get; set; }
 
-    public string? Description { get; set; }
+        public required decimal Price { get; set; }
 
-    public required decimal Price { get; set; }
+        public int StockQuantity { get; set; }
 
-    public int StockQuantity { get; set; }
+        // public string? ImageUrl { get; set; }
 
-    public string? ImageUrl { get; set; }
+        // FK
+        public required int CategoryId { get; set; }
+        // Navigation
+        public Category? Category { get; set; }
 
-    public bool IsDeleted { get; set; } = false;
+        // Navigation
+        public List<OrderItem>? OrderItems { get; set; }
 
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-
-    public DateTime? UpdatedAt { get; set; }
-
-    // FK
-    public required int CategoryId { get; set; }
-    // Navigation
-    public Category? Category { get; set; }
-
-    // Navigation
-    public List<OrderItem>? OrderItems { get; set; }
-
+    }
 }

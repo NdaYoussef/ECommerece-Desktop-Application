@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ECommerece.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -21,9 +22,9 @@ namespace ECommerece.Infrastructure.Configurations
             builder.ToTable(
                 t=>t.HasCheckConstraint("CK_Product_StockQuantity_Positive","[StockQuantity] > 0")
                 );
-            builder.HasOne(p=>p.Category)
-                   .WithMany(p=>p.Products)
-                   .HasForeignKey(p=>p.CategoryId);
+            // builder.HasOne(p=>p.Category)
+            //        .WithMany(c=>c.Products)
+            //        .HasForeignKey(p=>p.CategoryId);
 
         }
     }
