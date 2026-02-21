@@ -1,3 +1,6 @@
 <Solution>
+  <Project Path="ECommerece.Application/ECommerece.Application.csproj" />
+  <Project Path="ECommerece.Domain/ECommerece.Domain.csproj" />
+  <Project Path="ECommerece.Infrastructure/ECommerece.Infrastructure.csproj" />
   <Project Path="ECommerece.Presentation/ECommerece.Presentation.csproj" />
 </Solution>
