@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ECommerece.Application.IRepositories
 {
-    public interface ICartRepository
+    public interface ICartRepository : IGenericRepository
     {
         public Task<List<CartItem>> GetAll(int cartId);
         public Task<CartItem> GetCartItemById(int cartItemId );

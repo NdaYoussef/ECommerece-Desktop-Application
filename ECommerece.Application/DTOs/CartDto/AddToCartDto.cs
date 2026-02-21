@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ECommerece.Application.DTOs
+namespace ECommerece.Application.DTOs.CartDto
 {
     public class AddToCartDto
     {
