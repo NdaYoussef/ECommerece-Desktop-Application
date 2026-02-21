@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ECommerece.Application\ECommerece.Application.csproj" />
     <ProjectReference Include="..\ECommerece.Infrastructure\ECommerece.Infrastructure.csproj" />
   </ItemGroup>
