@@ -4,7 +4,9 @@ using System.Text;
 
 namespace ECommerece.Domain.Enums
 {
-    internal class UserRoles
+    public enum UserRoles
     {
+        Admin = 1, 
+        Customer 
     }
 }
