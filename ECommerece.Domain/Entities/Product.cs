@@ -11,9 +11,7 @@ namespace ECommerece.Domain.Entities
 
         public required decimal Price { get; set; }
 
-        public int StockQuantity { get; set; }
-
-        // public string? ImageUrl { get; set; }
+        public required int StockQuantity { get; set; }
 
         // FK
         public required int CategoryId { get; set; }
@@ -21,7 +19,8 @@ namespace ECommerece.Domain.Entities
         public Category? Category { get; set; }
 
         // Navigation
-        public List<OrderItem>? OrderItems { get; set; }
+        // public List<OrderItem>? OrderItems { get; set; }
 
+        // public string? ImageUrl { get; set; }
     }
 }
