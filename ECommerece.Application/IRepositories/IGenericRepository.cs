@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ECommerece.Application.Interfaces.Repositories
+namespace ECommerece.Application.IRepositories
 {
     public interface IGenericRepository<TEntity , Tkey> where TEntity : class
     {
