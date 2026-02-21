@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\UserDto\" />
+    <Folder Include="IRepositories\IUserRepository\" />
+    <Folder Include="Services\UserServices\" />
+  </ItemGroup>
+
 </Project>
