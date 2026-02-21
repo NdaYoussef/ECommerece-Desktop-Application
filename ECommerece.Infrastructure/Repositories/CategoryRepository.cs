@@ -7,9 +7,9 @@ using System.Text;
 
 namespace ECommerece.Infrastructure.Repositories
 {
-    internal class CategoryRepository : ICategoryRepository
+    public class CategoryRepository : ICategoryRepository
     {
-        public ECommerceDbContext _dbcontext;
+         ECommerceDbContext _dbcontext;
         public CategoryRepository(ECommerceDbContext dbcontext)
         {
             _dbcontext = dbcontext;
