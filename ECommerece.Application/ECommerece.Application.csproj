@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ECommerece.Domain\ECommerece.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
