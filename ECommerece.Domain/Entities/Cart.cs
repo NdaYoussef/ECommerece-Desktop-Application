@@ -6,12 +6,8 @@ namespace ECommerece.Domain.Entities
 {
     public class Cart
     {
-        public int Id { get; set; }
-        public int CustomerId { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public List<CartItem> cartItems { get; set; }
-        //public Customer customer { get; set; }
-
+        public string UserId { get; set; }
+        public User User { get; set; }
+        public List<CartItem> CartItems { get; set; }
     }
 }
