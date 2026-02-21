@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="IRepositories\IUserRepository\" />
+    <Folder Include="IServices\" />
+    <Folder Include="Services\UserServices\" />
+    <PackageReference Include="Mapster" Version="7.4.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ECommerece.Domain\ECommerece.Domain.csproj" />
   </ItemGroup>
 
