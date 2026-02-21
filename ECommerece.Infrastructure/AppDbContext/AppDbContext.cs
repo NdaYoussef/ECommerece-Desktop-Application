@@ -4,7 +4,8 @@ using System.Text;
 
 namespace ECommerece.Infrastructure.AppDbContext
 {
-    internal class AppDbContext
+    public class AppDbContext
     {
+
     }
 }
