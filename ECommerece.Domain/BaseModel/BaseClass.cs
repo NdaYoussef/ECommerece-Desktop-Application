@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ECommerece.Domain.BaseModel
 {
-    internal class BaseClass
+    public class BaseClass
     {
     }
 }

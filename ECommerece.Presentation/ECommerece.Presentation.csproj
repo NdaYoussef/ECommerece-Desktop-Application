@@ -8,4 +8,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ECommerece.Application\ECommerece.Application.csproj" />
+    <ProjectReference Include="..\ECommerece.Infrastructure\ECommerece.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
