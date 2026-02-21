@@ -16,6 +16,7 @@ namespace ECommerece.Infrastructure.Configurations
             builder.Property(p=>p.Description).HasMaxLength(500);
             builder.Property(p=>p.Label).HasMaxLength(150).IsRequired();
             builder.Property(p=>p.Price).HasPrecision(18,2).IsRequired();
+            builder.Property(p=>p.StockQuantity).IsRequired();
             builder.ToTable(
                 t=>t.HasCheckConstraint("CK_Product_Price_Positive","[Price] > 0")
                 );
