@@ -6,11 +6,13 @@ using ECommerece.Domain.Entities;
 
 namespace ECommerece.Application.IRepositories
 {
-    public interface IProductRepository:IGenericRepository<Product,int>
+    public interface IProductRepository : IGenericRepository<Product, int>
     {
-            public Product GetProductByLabel(string label);
-            // TODO if label isn't unique either return list or delete the function
-            public bool SoftDelete(int id);
-            // TODO should it be in IGenericRepository<>
+        public Product GetProductByLabel(string label);
+
+        // TODO if label isn't unique either return list or delete the function
+
+        public bool SoftDelete(int id);
+        // TODO should it be in IGenericRepository<>
     }
 }
