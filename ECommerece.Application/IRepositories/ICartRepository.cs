@@ -5,14 +5,8 @@ using System.Text;
 
 namespace ECommerece.Application.IRepositories
 {
-    public interface ICartRepository : IGenericRepository
-    {
-        public Task<List<CartItem>> GetAll(int cartId);
-        public Task<CartItem> GetCartItemById(int cartItemId );
-        public Task Add(CartItem item);
-        public Task Update(CartItem item);
-        public Task Remove(int cartItemId);
-        public Task ClearCart(int cartId);
-        public Task SaveChanges();
+    public interface ICartRepository : IGenericRepository<CartItem, int>
+    {       
+        public void ClearCart(int cartId);
     }
 }
