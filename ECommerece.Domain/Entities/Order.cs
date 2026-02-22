@@ -9,11 +9,11 @@ namespace ECommerece.Domain.Entities
     {
         public DateTime OrderDate { get; set; }= DateTime.Now;
 
-        public int UserId { get; set; }=0;
+        public string UserId { get; set; }
         public decimal TotalAmount { get; private set; } = 0;
 
         public OrderStatus Status { get; private set; }= OrderStatus.Pending;
-          public User User { get; set; }=null!;
+          public User User { get; set; }
         //public List<OrderItem> OrderItems { get; set; }= new List<OrderItem>();
 
         public decimal ShippingCost { get; set; } = 0;
