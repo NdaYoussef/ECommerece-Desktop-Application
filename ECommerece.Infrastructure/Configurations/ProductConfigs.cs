@@ -21,7 +21,7 @@ namespace ECommerece.Infrastructure.Configurations
                 t=>t.HasCheckConstraint("CK_Product_Price_Positive","[Price] > 0")
                 );
             builder.ToTable(
-                t=>t.HasCheckConstraint("CK_Product_StockQuantity_Positive","[StockQuantity] > 0")
+                t=>t.HasCheckConstraint("CK_Product_StockQuantity_Positive","[StockQuantity] >= 0")
                 );
             // builder.HasOne(p=>p.Category)
             //        .WithMany(c=>c.Products)
