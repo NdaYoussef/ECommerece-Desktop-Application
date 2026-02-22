@@ -13,16 +13,16 @@ namespace ECommerece.Infrastructure.Configurations
         {
             builder.HasKey(oi => oi.Id);
             builder.Property(oi => oi.UnitPrice).IsRequired().HasColumnType("decimal(18,2)");
-           
-            //builder.HasOne(oi => oi.Product)
-            //       .WithMany(p=> p.orderitems)
-            //       .HasForeignKey(oi => oi.ProductId)
-            //       .OnDelete(DeleteBehavior.Restrict);
 
-            //builder.HasOne(oi => oi.Order)
-            //       .WithMany(o => o.OrderItems)
-            //       .HasForeignKey(oi => oi.OrderId)
-            //       .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(oi => oi.Product)
+                   .WithMany(p => p.orderitems)
+                   .HasForeignKey(oi => oi.ProductId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(oi => oi.Order)
+                   .WithMany(o => o.OrderItems)
+                   .HasForeignKey(oi => oi.OrderId)
+                   .OnDelete(DeleteBehavior.Restrict);
         }
     
     }
