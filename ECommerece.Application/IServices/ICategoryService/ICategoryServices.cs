@@ -7,11 +7,11 @@ namespace ECommerece.Application.IServices.ICategoryService
 {
     public interface ICategoryServices
     {
-        public List<GetCategoryDto> GetAllCategories();
-        public GetCategoryDto GetCategoryById(int id);
-        public GetCategoryDto GetCategoryByName(string name);
-        public void AddCategory(AddCategoryDto CategoryDto);
-        public void UpdateCategory(UpdateCategoryDto CategoryDto);
-        public void DeleteCategory(int id);
+         Task<List<GetCategoryDto>> GetAllCategories();
+         Task<GetCategoryDto> GetCategoryById(int id);
+         Task<GetCategoryDto> GetCategoryByName(string name);
+         Task AddCategory(AddCategoryDto CategoryDto);
+         Task UpdateCategory(UpdateCategoryDto CategoryDto);
+         Task DeleteCategory(int id);
     }
 }

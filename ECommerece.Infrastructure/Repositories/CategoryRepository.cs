@@ -1,6 +1,7 @@
 ﻿using ECommerece.Application.IRepositories;
 using ECommerece.Domain.Entities;
 using ECommerece.Infrastructure.AppDbContext;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,28 +20,28 @@ namespace ECommerece.Infrastructure.Repositories
         {
             return _dbcontext.Categories;
         }
-        public Category GetById(int id)
+        public async Task<Category> GetById(int id)
         {
-            return _dbcontext.Categories.FirstOrDefault(c => c.Id == id);
+            return await _dbcontext.Categories.FirstOrDefaultAsync(c => c.Id == id);
         }
-        public Category GetByName(string name)
+        public async Task<Category> GetByName(string name)
         {
-            return _dbcontext.Categories.FirstOrDefault(c => c.CategoryName == name);
+            return await _dbcontext.Categories.FirstOrDefaultAsync(c => c.CategoryName == name);
         }
-        public void Add(Category category)
+        public async Task Add(Category category)
         {
-            _dbcontext.Categories.Add(category);
-            _dbcontext.SaveChanges();
+           await _dbcontext.Categories.AddAsync(category);
+           await _dbcontext.SaveChangesAsync();
         }
-        public void Update(Category category)
+        public async Task Update(Category category)
         {
             _dbcontext.Categories.Update(category);
-            _dbcontext.SaveChanges();
+            await _dbcontext.SaveChangesAsync();
         }
-        public void Delete(Category category)
+        public async Task Delete(Category category)
         {
             category.IsDeleted = true;
-            _dbcontext.SaveChanges();
+            await _dbcontext.SaveChangesAsync();
         }
     }
 }
