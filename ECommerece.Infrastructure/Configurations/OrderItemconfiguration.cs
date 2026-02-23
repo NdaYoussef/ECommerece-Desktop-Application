@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ECommerece.Infrastructure.Configurations
 {
-    public class OrderItemconfigurations: IEntityTypeConfiguration<OrderItem>
+    public class OrderItemconfiguration: IEntityTypeConfiguration<OrderItem>
     {
         public void Configure(EntityTypeBuilder<OrderItem> builder)
         {

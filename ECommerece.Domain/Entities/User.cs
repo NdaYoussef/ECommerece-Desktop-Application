@@ -14,5 +14,8 @@ namespace ECommerece.Domain.Entities
         public string Password { get; set; }
 
         public UserRoles Role {  get; set; }
+
+        public List<Order> Orders   { get; set; }
+       
     }
 }
