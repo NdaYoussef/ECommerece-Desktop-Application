@@ -8,6 +8,6 @@ namespace ECommerece.Application.IRepositories
 {
     public interface ICategoryRepository : IGenericRepository<Category,int>
     {
-        public Category GetByName(string name);
+         Task<Category> GetByName(string name);
     }
 }
