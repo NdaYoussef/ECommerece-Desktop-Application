@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ECommerece.Application.IRepositories;
 using ECommerece.Domain.Entities;
 using ECommerece.Infrastructure.AppDbContext;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerece.Infrastructure.Repositories
 {
@@ -12,14 +13,16 @@ namespace ECommerece.Infrastructure.Repositories
     {
         readonly ECommerceDbContext context = Context;
 
-        public void Add(Product entity)
+        public async Task Add(Product entity)
         {
-            context.Products.Add(entity);
+            await context.Products.AddAsync(entity);
         }
 
-        public void Delete(Product entity)
+        public Task Delete(Product entity)
         {
             context.Products.Remove(entity);
+            return Task.CompletedTask;
+            // await context.SaveChangesAsync();
         }
 
         public IQueryable<Product> GetAll()
@@ -27,32 +30,33 @@ namespace ECommerece.Infrastructure.Repositories
             return context.Products;
         }
 
-        public Product GetById(int id)
+        public async Task<Product> GetById(int id)
         {
-            return context.Products.Where(p => p.Id == id).FirstOrDefault();
+            return await context.Products.Where(p => p.Id == id).FirstOrDefaultAsync();
         }
 
-        public Product? GetProductByLabel(string label)
+        public async Task<Product?> GetProductByLabel(string label)
         {
-            return context.Products.Where(p => p.Label == label).FirstOrDefault();
+            return await context.Products.Where(p => p.Label == label).FirstOrDefaultAsync();
         }
 
-        public void SaveChanges()
+        public async Task SaveChanges()
         {
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public void SoftDelete(int id)
+        public async Task SoftDelete(Product entity)
         {
-            var existing = GetById(id);
-            existing.IsDeleted = true;
-            Update(existing);
-            SaveChanges();
+            entity.IsDeleted = true;
+            await Update(entity);
         }
 
-        public void Update(Product entity)
+        public Task Update(Product entity)
+        // if passed by reference would it not need to be retrived from the database
         {
-            context.Products.Update(entity);
+            context.Update(entity);
+            return Task.CompletedTask;
+            // await context.SaveChangesAsync();
         }
     }
 }

@@ -15,6 +15,7 @@ namespace ECommerece.Infrastructure.Configurations
             builder.HasKey(p => p.Id);
             builder.Property(p => p.Description).HasMaxLength(500);
             builder.Property(p => p.Label).HasMaxLength(150).IsRequired();
+            builder.HasIndex(p => p.Label).IsUnique();
             builder.Property(p => p.Price).HasPrecision(18, 2).IsRequired();
             builder.Property(p => p.StockQuantity).IsRequired();
             builder.ToTable(t => t.HasCheckConstraint("CK_Product_Price_Positive", "[Price] > 0"));
@@ -29,6 +30,7 @@ namespace ECommerece.Infrastructure.Configurations
                 .HasMany(p => p.orderitems)
                 .WithOne(oi => oi.Product)
                 .HasForeignKey(oi => oi.ProductId);
+            builder.HasMany(p=>p.cartItems).WithOne(c=>c.product).HasForeignKey(c=>c.ProductId);
         }
     }
 }

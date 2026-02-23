@@ -27,5 +27,6 @@ namespace ECommerece.Domain.Entities
 
         // Navigation
         public List<OrderItem>? orderitems { get; set; }
+        public List<CartItem>? cartItems{get;set;}
     }
 }
