@@ -9,6 +9,11 @@ namespace ECommerece.Infrastructure.AppDbContext
 {
     public class ECommerceDbContext : DbContext
     {
+        public ECommerceDbContext(DbContextOptions<ECommerceDbContext> options)
+      : base(options)
+        {
+        }
+
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
 

@@ -23,10 +23,18 @@ namespace ECommerece.Infrastructure.Configurations
 
             //// Many-to-One: CartItem -> Product
             //here error because Product didn't used any property related to cart
-            //builder.HasOne(ci => ci.Product)
-            //    .WithMany(p => p.CartItem)
-            //    .HasForeignKey(ci => ci.ProductId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+
+            //cartItems - Product
+            builder.HasOne(ci => ci.Product)
+                .WithMany(p => p.CartItems)
+                .HasForeignKey(ci => ci.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //cartItems - Cart
+            builder.HasOne(c => c.Cart)
+                .WithMany(ci=>ci.CartItems)
+                .HasForeignKey(f=>f.CartId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace ECommerece.Domain.Entities
 
         public OrderStatus Status { get; private set; }= OrderStatus.Pending;
         public PaymentStatus paymentstatus { get; set; } = PaymentStatus.Unknown;
-        public decimal ShippingCost { get; set; } = 0;
+        public decimal ShippingCost { get; set; } 
         public string ShippingAddress { get; set; } = string.Empty;
         public string discountcode { get; set; } = string.Empty;
 

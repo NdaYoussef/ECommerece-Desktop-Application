@@ -7,7 +7,7 @@ namespace ECommerece.Domain.Entities
 {
     public class Cart : BaseClass<int>
     {
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
         public User User { get; set; }
         public List<CartItem> CartItems { get; set; }
     }

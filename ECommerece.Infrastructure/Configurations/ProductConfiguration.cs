@@ -8,11 +8,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ECommerece.Infrastructure.Configurations
 {
-<<<<<<<< HEAD:ECommerece.Infrastructure/Configurations/ProductConfigurations.cs
-    public class ProductConfigurations : IEntityTypeConfiguration<Product>
-========
+   
     public class ProductConfiguration : IEntityTypeConfiguration<Product>
->>>>>>>> main:ECommerece.Infrastructure/Configurations/ProductConfiguration.cs
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
@@ -27,9 +24,14 @@ namespace ECommerece.Infrastructure.Configurations
             builder.ToTable(
                 t=>t.HasCheckConstraint("CK_Product_StockQuantity_Positive","[StockQuantity] > 0")
                 );
-            // builder.HasOne(p=>p.Category)
-            //        .WithMany(c=>c.Products)
-            //        .HasForeignKey(p=>p.CategoryId);
+
+            //product - category
+            builder.HasOne(p => p.Category)
+                   .WithMany(c => c.Products)
+                   .HasForeignKey(p => p.CategoryId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+         
 
         }
     }

@@ -1,27 +1,44 @@
 using ECommerece.Application.Mappers;
-
+using ECommerece.Infrastructure.AppDbContext;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace ECommerece.Presentation
 {
     internal static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main()
         {
+            var host = CreateHostBuilder().Build();
 
-            #region Register mapping services using mapster
-            Mapping.RegisterAllMapping(); 
-            #endregion
+            Mapping.RegisterAllMapping();
 
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            System.Windows.Forms.Application.Run(new Form1());
 
-
+            System.Windows.Forms.Application.Run(host.Services.GetRequiredService<Form1>());
         }
+
+        static IHostBuilder CreateHostBuilder()
+        {
+            return Host.CreateDefaultBuilder()
+                .ConfigureServices((context, services) =>
+                {
+                    // Presentation
+                    services.AddTransient<Form1>();
+
+                    // Application Layer Services
+                    // services.AddScoped<IProductService, ProductService>();
+
+                    // Infrastructure Layer
+                    services.AddDbContext<ECommerceDbContext>(options =>
+                                options.UseSqlServer(
+                                    context.Configuration.GetConnectionString("DefaultConnection"),
+                                    sqlOptions => sqlOptions.EnableRetryOnFailure()
+                                ));
+                });
+                }
     }
-}
+    }
