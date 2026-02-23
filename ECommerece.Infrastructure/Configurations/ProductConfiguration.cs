@@ -8,7 +8,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ECommerece.Infrastructure.Configurations
 {
-    public class ProductConfigs : IEntityTypeConfiguration<Product>
+<<<<<<<< HEAD:ECommerece.Infrastructure/Configurations/ProductConfigurations.cs
+    public class ProductConfigurations : IEntityTypeConfiguration<Product>
+========
+    public class ProductConfiguration : IEntityTypeConfiguration<Product>
+>>>>>>>> main:ECommerece.Infrastructure/Configurations/ProductConfiguration.cs
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {

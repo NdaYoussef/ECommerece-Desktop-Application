@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ECommerece.Infrastructure.Configurations
 {
-    public class UserConfiguration :IEntityTypeConfiguration<User>
+    public class UserConfigurations :IEntityTypeConfiguration<User>
     {
         public void Configure(EntityTypeBuilder<User> configuration)
         {

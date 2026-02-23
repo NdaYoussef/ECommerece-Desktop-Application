@@ -7,19 +7,22 @@ namespace ECommerece.Domain.Entities
 {
     public class Order :BaseClass<int>
     {
-        public DateTime OrderDate { get; set; }= DateTime.Now;
-
-        public string UserId { get; set; }
+        public DateTime OrderDate { get; set; } = DateTime.Now;
         public decimal TotalAmount { get; private set; } = 0;
 
         public OrderStatus Status { get; private set; }= OrderStatus.Pending;
-          public User User { get; set; }
-        //public List<OrderItem> OrderItems { get; set; }= new List<OrderItem>();
-
-        public decimal ShippingCost { get; set; } = 0;
-         public string ShippingAddress { get; set; } = string.Empty;
         public PaymentStatus paymentstatus { get; set; } = PaymentStatus.Unknown;
+        public decimal ShippingCost { get; set; } = 0;
+        public string ShippingAddress { get; set; } = string.Empty;
         public string discountcode { get; set; } = string.Empty;
+
+
+        public string UserId { get; set; }
+        public User User { get; set; }
+
+        public List<OrderItem> OrderItems { get; set; }= new List<OrderItem>();
+
+
         //public decimal CalculateTotalAmount()
         //{
         //    decimal total = 0;
@@ -46,12 +49,12 @@ namespace ECommerece.Domain.Entities
             }
             else if (Status == OrderStatus.Processing)
             {
-                Thread.Sleep(2000); // Simulate processing time
+              //  Thread.Sleep(2000); // Simulate processing time
                 Status = OrderStatus.Shipped;
             }
             else if (Status == OrderStatus.Shipped)
             {
-                Thread.Sleep(3000); // Simulate delivery time
+              //  Thread.Sleep(3000); // Simulate delivery time
                 Status = OrderStatus.Delivered;
             }
             return Status;
