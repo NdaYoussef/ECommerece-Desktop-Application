@@ -15,15 +15,19 @@ namespace ECommerece.Infrastructure.Configurations
             builder.Property(o => o.TotalAmount).HasPrecision(18, 2);
             builder.Property(o=>o.ShippingAddress).HasMaxLength(500);
             builder.Property(o=>o.discountcode).HasMaxLength(4);
+            builder.Property(s => s.ShippingCost).HasPrecision(18, 2);
+
+            ////order - user 
             //builder.HasOne(o => o.User)
             //       .WithMany(u => u.Orders)
             //       .HasForeignKey(o => o.UserId)
             //       .OnDelete(DeleteBehavior.Restrict);
 
-            //builder.HasMany(o => o.OrderItems)
-            //       .WithOne(oi => oi.Order)
-            //       .HasForeignKey(oi => oi.OrderId)
-            //       .OnDelete(DeleteBehavior.Cascade);
+            //order - orderItems
+            builder.HasMany(o => o.OrderItems)
+                   .WithOne(oi => oi.Order)
+                   .HasForeignKey(oi => oi.OrderId)
+                   .OnDelete(DeleteBehavior.Restrict);
         }
 
     }

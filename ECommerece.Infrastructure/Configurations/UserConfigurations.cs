@@ -9,14 +9,24 @@ namespace ECommerece.Infrastructure.Configurations
 {
     public class UserConfigurations :IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<User> configuration)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
-            configuration.Property(n => n.Name).IsRequired().HasMaxLength(100);
-            configuration.Property(e => e.Email).IsRequired().HasMaxLength(100);
-            configuration.HasIndex(e => e.Email).IsUnique();
-            configuration.Property(p => p.Password).IsRequired().HasMaxLength(100);
-            configuration.Property(d => d.IsDeleted).HasDefaultValue(false);
-            configuration.Property(r => r.Role).IsRequired();
+            builder.Property(n => n.Name).IsRequired().HasMaxLength(100);
+            builder.Property(e => e.Email).IsRequired().HasMaxLength(100);
+            builder.HasIndex(e => e.Email).IsUnique();
+            builder.Property(p => p.Password).IsRequired().HasMaxLength(100);
+            builder.Property(d => d.IsDeleted).HasDefaultValue(false);
+            builder.Property(r => r.Role).IsRequired();
+
+
+            //user - order
+            builder.HasMany(o => o.Orders)
+                    .WithOne(u => u.User)
+                    .HasForeignKey(f => f.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+
+
 
         }
     }

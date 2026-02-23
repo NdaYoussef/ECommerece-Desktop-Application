@@ -24,9 +24,14 @@ namespace ECommerece.Infrastructure.Configurations
             builder.ToTable(
                 t=>t.HasCheckConstraint("CK_Product_StockQuantity_Positive","[StockQuantity] > 0")
                 );
-            // builder.HasOne(p=>p.Category)
-            //        .WithMany(c=>c.Products)
-            //        .HasForeignKey(p=>p.CategoryId);
+
+            //product - category
+            builder.HasOne(p => p.Category)
+                   .WithMany(c => c.Products)
+                   .HasForeignKey(p => p.CategoryId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+         
 
         }
     }

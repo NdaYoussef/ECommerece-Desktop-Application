@@ -18,9 +18,16 @@ namespace ECommerece.Infrastructure.Configurations
             
             builder.Property(c => c.UpdatedAt).IsRequired();
 
+            //cart - cartItems
             builder.HasMany(c => c.CartItems)
                   .WithOne(ci => ci.Cart)
                   .HasForeignKey(ci => ci.CartId);
+
+            //cart - user
+            builder.HasOne(u => u.User)
+                .WithOne(c => c.Cart)
+                .HasForeignKey<Cart>(u => u.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
         }

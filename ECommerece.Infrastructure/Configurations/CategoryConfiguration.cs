@@ -11,10 +11,10 @@ namespace ECommerece.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
-            builder.Property(c => c.CategoryName).IsRequired().HasMaxLength(50);
-            builder.HasIndex(c => c.CategoryName).IsUnique();
+            builder.Property(c => c.Name).IsRequired().HasMaxLength(50);
+            builder.HasIndex(c => c.Name).IsUnique();
 
-            builder.Property(c => c.CategoryDescription).IsRequired(false).HasMaxLength(200);
+            builder.Property(c => c.Description).IsRequired(false).HasMaxLength(200);
            
         }
     }
