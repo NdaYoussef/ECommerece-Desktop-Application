@@ -26,6 +26,6 @@ namespace ECommerece.Domain.Entities
         public Category? Category { get; set; }
 
         // Navigation
-        // public List<OrderItem>? OrderItems { get; set; }
+        public List<OrderItem>? orderitems { get; set; }
     }
 }

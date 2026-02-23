@@ -14,8 +14,8 @@ namespace ECommerece.Application.IServices
         public List<ProductListDto>? GetProductsByCategory(int CategoryId);
         public List<ProductListDto>? GetProductsByCategory(string CategoryName);
         public List<ProductListDto>? SearchProducts(string keyword);
-        public bool AddProduct(ProductCreateDto product);
-        public bool UpdateProduct(int id, ProductCreateDto product);
+        public bool AddProduct(ProductCreateDto productDto);
+        public bool UpdateProduct(int id, ProductCreateDto productDto);
         public bool DeleteProduct(int id);
         List<ProductDetailsDto>? GetLowStockProducts(int threshold = 5);
     }
