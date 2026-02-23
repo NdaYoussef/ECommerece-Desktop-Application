@@ -15,27 +15,17 @@ namespace ECommerece.Infrastructure.Repositories
         //{
         //    Context = _Context;
         //}
-        public void Add(Cart entity)
+        public Task Add(Cart entity)
         {
             throw new NotImplementedException();
         }
 
-        public void AddCart(Cart entity)
+        public Task ClearCart(int cartId)
         {
             throw new NotImplementedException();
         }
 
-        public void ClearCart(int cartId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(Cart entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteCart(Cart entity)
+        public Task Delete(Cart entity)
         {
             throw new NotImplementedException();
         }
@@ -45,32 +35,17 @@ namespace ECommerece.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public IQueryable<Cart> GetAllCart()
+        public Task<Cart> GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Cart GetById(int id)
+        public Task SaveChangesAsync()
         {
             throw new NotImplementedException();
         }
 
-        public void SaveCartChanges()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SaveChanges()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(Cart entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateCart(Cart entity)
+        public Task Update(Cart entity)
         {
             throw new NotImplementedException();
         }

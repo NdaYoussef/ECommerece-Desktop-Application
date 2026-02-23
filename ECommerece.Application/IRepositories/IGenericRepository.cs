@@ -10,6 +10,8 @@ namespace ECommerece.Application.IRepositories
          Task<TEntity> GetById(Tkey id);
          Task Add(TEntity entity);
          Task Update(TEntity entity);
-         Task Delete(TEntity entity);  
+         Task Delete(TEntity entity);
+
+        Task SaveChangesAsync();
     }
 }

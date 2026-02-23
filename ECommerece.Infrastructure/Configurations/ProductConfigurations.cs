@@ -6,13 +6,9 @@ using ECommerece.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ECommerece.Infrastructure.Configurations
-{
-<<<<<<<< HEAD:ECommerece.Infrastructure/Configurations/ProductConfigurations.cs
+namespace ECommerece.Infrastructure.Configurations;
     public class ProductConfigurations : IEntityTypeConfiguration<Product>
-========
-    public class ProductConfiguration : IEntityTypeConfiguration<Product>
->>>>>>>> main:ECommerece.Infrastructure/Configurations/ProductConfiguration.cs
+
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
@@ -33,4 +29,3 @@ namespace ECommerece.Infrastructure.Configurations
 
         }
     }
-}
