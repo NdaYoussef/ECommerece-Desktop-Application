@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ECommerece.Infrastructure.Configurations
 {
-    internal class CategoryConfigurations : IEntityTypeConfiguration<Category>
+    internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
