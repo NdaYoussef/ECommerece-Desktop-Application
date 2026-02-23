@@ -18,8 +18,8 @@ namespace ECommerece.Infrastructure.Configurations
             
             builder.Property(c => c.UpdatedAt).IsRequired();
 
-            builder.HasMany(c => c.cartItems)
-                  .WithOne(ci => ci.cart)
+            builder.HasMany(c => c.CartItems)
+                  .WithOne(ci => ci.Cart)
                   .HasForeignKey(ci => ci.CartId);
 
 

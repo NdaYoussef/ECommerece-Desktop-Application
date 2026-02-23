@@ -15,48 +15,65 @@ namespace ECommerece.Infrastructure.Repositories
         //{
         //    Context = _Context;
         //}
-
-        public Task Add(CartItem item)
-        {
-            throw new NotImplementedException();
-
-        }
-
-        public Task Update(CartItem item)
-        {
-            throw new NotImplementedException();
-
-        }
-
-        public Task Remove(int cartItemId)
-        {
-            throw new NotImplementedException();
-
-        }
-
-        public Task ClearCart(int cartId)
+        public void Add(Cart entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<CartItem>> GetAll(int cartId)
+        public void AddCart(Cart entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<CartItem> GetCartItemById(int cartItemId)
+        public void ClearCart(int cartId)
         {
             throw new NotImplementedException();
         }
 
-       
-
-        public Task SaveChanges()
+        public void Delete(Cart entity)
         {
             throw new NotImplementedException();
         }
 
-        
+        public void DeleteCart(Cart entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Cart> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Cart> GetAllCart()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Cart GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveCartChanges()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveChanges()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Cart entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateCart(Cart entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
