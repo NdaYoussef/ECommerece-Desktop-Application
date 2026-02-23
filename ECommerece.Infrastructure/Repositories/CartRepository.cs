@@ -10,70 +10,59 @@ namespace ECommerece.Infrastructure.Repositories
 {
     public class CartRepository : ICartRepository
     {
-        //AppDbContext _Context;
-        //public CartRepository(AppDbContext Context)
-        //{
-        //    Context = _Context;
-        //}
-        public void Add(Cart entity)
+        ECommerceDbContext _Context;
+        public CartRepository(ECommerceDbContext Context)
         {
-            throw new NotImplementedException();
+            _Context = Context;
         }
 
-        public void AddCart(Cart entity)
+        public Task Add(Cart entity)
         {
-            throw new NotImplementedException();
+            _Context.Carts.Add(entity);
+            return Task.CompletedTask;
         }
+
+        public Task Update(Cart entity)
+        {
+            _Context.Carts.Update(entity);
+            return Task.CompletedTask;
+        }
+
+
+        public Task Delete(Cart entity)
+        {
+            _Context.Carts.Remove(entity);
+            return Task.CompletedTask;
+        }
+
 
         public void ClearCart(int cartId)
         {
-            throw new NotImplementedException();
+            var items = _Context.CartItems
+                .Where(ci => ci.CartId == cartId)
+                .ToList();
+            _Context.CartItems.RemoveRange(items);
         }
 
-        public void Delete(Cart entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteCart(Cart entity)
-        {
-            throw new NotImplementedException();
-        }
 
         public IQueryable<Cart> GetAll()
         {
-            throw new NotImplementedException();
+            return _Context.Carts.Include(c => c.CartItems)
+                .ThenInclude(ci => ci.Product);
         }
 
-        public IQueryable<Cart> GetAllCart()
+        public Task<Cart> GetById(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Cart GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SaveCartChanges()
-        {
-            throw new NotImplementedException();
+            return _Context.Carts.Include(c => c.CartItems)
+                .ThenInclude(ci => ci.Product)
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public void SaveChanges()
         {
-            throw new NotImplementedException();
+            _Context.SaveChanges(); 
         }
 
-        public void Update(Cart entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateCart(Cart entity)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 
