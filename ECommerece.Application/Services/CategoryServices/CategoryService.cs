@@ -44,6 +44,9 @@ namespace ECommerece.Application.Services.CategoryServices
             return cat.Adapt<GetCategoryDto>();
         }
         public async Task AddCategory(AddCategoryDto CategoryDto) {
+            if(string.IsNullOrWhiteSpace(CategoryDto.CategoryName)){
+                throw new Exception($"Category name is required");
+            }
             Category category = new Category() { CategoryName = CategoryDto.CategoryName, CategoryDescription = CategoryDto.CategoryDescription };
             await _categoryRepository.Add(category);
         }
