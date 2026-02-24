@@ -1,4 +1,5 @@
-﻿using ECommerece.Application.DTOs.UserDto;
+﻿using ECommerece.Application.DTOs.OrderDtos;
+using ECommerece.Application.DTOs.UserDto;
 using ECommerece.Domain.Entities;
 using Mapster;
 using System;
@@ -13,6 +14,11 @@ namespace ECommerece.Application.Mappers
         {
             TypeAdapterConfig<User, RegisterDto>.NewConfig();
             TypeAdapterConfig<User, LoginDto>.NewConfig();
+            TypeAdapterConfig<Order, OrderDto>.NewConfig()
+               .Map(dest => dest.Username, src => src.User.Name);
+            TypeAdapterConfig<CreateOrderDto,Order>.NewConfig();
+            TypeAdapterConfig<UpdateOrderDto, Order>.NewConfig();
+
         }
 
     }
