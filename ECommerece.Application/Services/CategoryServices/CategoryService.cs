@@ -44,17 +44,23 @@ namespace ECommerece.Application.Services.CategoryServices
             return cat.Adapt<GetCategoryDto>();
         }
         public async Task AddCategory(AddCategoryDto CategoryDto) {
-            if(string.IsNullOrWhiteSpace(CategoryDto.CategoryName)){
+
+            if(string.IsNullOrWhiteSpace(CategoryDto.Name)){
                 throw new Exception($"Category name is required");
             }
-            Category category = new Category() { CategoryName = CategoryDto.CategoryName, CategoryDescription = CategoryDto.CategoryDescription };
+            var existCategory = _categoryRepository.GetByName(CategoryDto.Name);
+            if (existCategory != null)
+            {
+                throw new Exception($"Category name already exist");
+            }
+            Category category = new Category() { Name = CategoryDto.Name, Description = CategoryDto.Description };
             await _categoryRepository.Add(category);
         }
         public async Task UpdateCategory(UpdateCategoryDto CategoryDto)
         {
             var category = await _categoryRepository.GetById(CategoryDto.Id);
-            category.CategoryName = CategoryDto.CategoryName;
-            category.CategoryDescription = CategoryDto.CategoryDescription;
+            category.Name = CategoryDto.Name;
+            category.Description = CategoryDto.Description;
             await _categoryRepository.Update(category);
         }
         public async Task DeleteCategory(int id) { 

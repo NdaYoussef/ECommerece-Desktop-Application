@@ -1,9 +1,10 @@
-﻿using System;
+﻿using ECommerece.Domain.BaseModel;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ECommerece.Domain.Entities
 {
-    public class Product : BaseModel.BaseClass<int>
+    public class Product :BaseClass<int>
     {
         public string? Label { get; set; }
 
@@ -21,7 +22,9 @@ namespace ECommerece.Domain.Entities
         public Category? Category { get; set; }
 
         // Navigation
-        // public List<OrderItem>? OrderItems { get; set; }
+         public List<OrderItem>? OrderItems { get; set; }
+
+        public List<CartItem> CartItems { get; set; }
 
     }
 }
