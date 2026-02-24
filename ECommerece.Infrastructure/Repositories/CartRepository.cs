@@ -63,6 +63,10 @@ namespace ECommerece.Infrastructure.Repositories
             _Context.SaveChanges(); 
         }
 
+        public Task Update(Cart entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

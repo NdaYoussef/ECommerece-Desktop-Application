@@ -26,7 +26,7 @@ namespace ECommerece.Infrastructure.Repositories
         }
         public async Task<Category> GetByName(string name)
         {
-            return await _dbcontext.Categories.FirstOrDefaultAsync(c => c.CategoryName == name);
+            return await _dbcontext.Categories.FirstOrDefaultAsync(c => c.Name == name);
         }
         public async Task Add(Category category)
         {
@@ -42,6 +42,11 @@ namespace ECommerece.Infrastructure.Repositories
         {
             category.IsDeleted = true;
             await _dbcontext.SaveChangesAsync();
+        }
+
+        public Task SaveChangesAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }
