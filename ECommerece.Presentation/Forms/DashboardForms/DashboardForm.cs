@@ -308,12 +308,7 @@ namespace ECommerece.Presentation.Forms.DashboardForms
 
         private void LoadStats()
         {
-            // هنا هتجيب البيانات من الـ Service
-            // مثلاً:
-            // var stats = await _dashboardService.GetStatsAsync();
-            // UpdateCard(cardTotalProducts, stats.TotalProducts.ToString());
-
-            // دلوقتي Demo Data
+           
             UpdateCardValue(cardTotalProducts, "128");
             UpdateCardValue(cardTotalOrders, "54");
             UpdateCardValue(cardTotalCustomers, "320");
@@ -339,9 +334,6 @@ namespace ECommerece.Presentation.Forms.DashboardForms
 
             if (confirm == DialogResult.Yes)
             {
-                // افتح الـ LoginForm وسكر الـ Dashboard
-                // var login = Program.ServiceProvider.GetRequiredService<LoginForm>();
-                // login.Show();
                 this.Close();
             }
         }
