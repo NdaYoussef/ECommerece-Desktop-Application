@@ -8,7 +8,7 @@ using ECommerece.Application.IServices;
 using ECommerece.Domain.Entities;
 using Mapster;
 
-namespace ECommerece.Application.Services
+namespace ECommerece.Application.Services.ProductServices
 {
     public class ProductService(IProductRepository repository) : IProductService
     {
@@ -16,61 +16,98 @@ namespace ECommerece.Application.Services
 
         public bool AddProduct(ProductCreateDto productDto)
         {
-            Product product = productDto.Adapt<Product>();
             try
             {
-                return Repository.GetById(product.Id) != null;
-            }
-            catch (ArgumentNullException _)
-            {
+                var product = productDto.Adapt<Product>();
                 Repository.Add(product);
                 return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
         public bool DeleteProduct(int id)
         {
-            throw new NotImplementedException();
+            var product = Repository.GetById(id);
+            if (product.Result != null)
+            {
+                Repository.SoftDelete(product.Result);
+                return true;
+            }
+            return false;
         }
 
         public List<ProductDetailsDto>? GetLowStockProducts(int threshold = 5)
         {
-            throw new NotImplementedException();
+            return Repository
+                .GetAll()
+                .Where(p => p.StockQuantity <= threshold)
+                .ProjectToType<ProductDetailsDto>()
+                .ToList();
         }
 
         public ProductDetailsDto? GetProductDetails(string label)
         {
-            throw new NotImplementedException();
+            return Repository.GetProductByLabel(label)?.Adapt<ProductDetailsDto>();
         }
 
         public ProductDetailsDto? GetProductDetails(int id)
         {
-            throw new NotImplementedException();
+            return Repository.GetById(id)?.Adapt<ProductDetailsDto>();
         }
 
         public List<ProductListDto>? GetProductsByCategory(int CategoryId)
         {
-            throw new NotImplementedException();
+            return Repository
+                .GetAll()
+                .Where(p => p.CategoryId == CategoryId)
+                .ProjectToType<ProductListDto>()
+                .ToList();
         }
 
         public List<ProductListDto>? GetProductsByCategory(string CategoryName)
         {
-            throw new NotImplementedException();
+            return Repository
+                .GetAll()
+                .Where(p => (p.Category != null) && p.Category.Name == CategoryName)
+                .ProjectToType<ProductListDto>()
+                .ToList();
         }
 
         public List<ProductListDto>? GetProductsList()
         {
-            throw new NotImplementedException();
+            return Repository.GetAll().ProjectToType<ProductListDto>().ToList();
         }
 
         public List<ProductListDto>? SearchProducts(string keyword)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(keyword))
+                return GetProductsList();
+
+            return Repository
+                .GetAll()
+                .Where(p => p.Label != null && p.Label.ToLower().Contains(keyword.ToLower()))
+                .ProjectToType<ProductListDto>()
+                .ToList();
         }
 
         public bool UpdateProduct(int id, ProductCreateDto productDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var existing = Repository.GetById(id);
+                if (existing is null)
+                    return false;
+                productDto.Adapt(existing);
+                Repository.Update(existing.Result);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
