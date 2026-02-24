@@ -12,6 +12,13 @@ namespace ECommerece.Application.IRepositories
          Task Update(TEntity entity);
          Task Delete(TEntity entity);
 
-        Task SaveChangesAsync();
+=========
+        public IQueryable<TEntity> GetAll();
+        public TEntity GetById(Tkey id);
+        public void Add(TEntity entity);
+        public void Update(TEntity entity);
+        public void Delete(TEntity entity);
+        public void SaveChanges();
+>>>>>>>>> Temporary merge branch 2
     }
 }
