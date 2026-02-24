@@ -6,10 +6,10 @@ namespace ECommerece.Domain.Entities
 {
     public enum OrderStatus
     {
-        Pending,     
+        Pending,
         Approved,      
         Rejected,      
-        Processing,    
+        Processing,
         Shipped,
         Delivered,
         Cancelled

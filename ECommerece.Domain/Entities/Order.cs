@@ -22,9 +22,9 @@ namespace ECommerece.Domain.Entities
 
         public List<OrderItem> OrderItems { get; set; }= new List<OrderItem>();
 
-
+         
         public decimal CalculateTotalAmount()
-        {
+            {
             decimal total = 0;
             foreach (var item in OrderItems)
             {
