@@ -45,6 +45,11 @@ namespace ECommerece.Infrastructure.Repositories
             await context.SaveChangesAsync();
         }
 
+        public async Task SaveChangesAsync()
+        {
+            await context.SaveChangesAsync();
+        }
+
         public async Task SoftDelete(Product entity)
         {
             entity.IsDeleted = true;

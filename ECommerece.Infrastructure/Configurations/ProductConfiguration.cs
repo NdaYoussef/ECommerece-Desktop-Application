@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ECommerece.Infrastructure.Configurations
 {
-    public class ProductConfigs : IEntityTypeConfiguration<Product>
+    public class ProductConfiguration : IEntityTypeConfiguration<Product>
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
@@ -24,13 +24,19 @@ namespace ECommerece.Infrastructure.Configurations
             );
             builder
                 .HasOne(p => p.Category)
-                .WithMany(c => c.products)
-                .HasForeignKey(p => p.CategoryId);
+                .WithMany(c => c.Products)
+                .HasForeignKey(p => p.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
             builder
-                .HasMany(p => p.orderitems)
+                .HasMany(p => p.OrderItems)
                 .WithOne(oi => oi.Product)
-                .HasForeignKey(oi => oi.ProductId);
-            builder.HasMany(p=>p.cartItems).WithOne(c=>c.product).HasForeignKey(c=>c.ProductId);
+                .HasForeignKey(oi => oi.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+            builder
+                .HasMany(p => p.CartItems)
+                .WithOne(c => c.Product)
+                .HasForeignKey(c => c.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -12,5 +12,6 @@ namespace ECommerece.Application.IRepositories
          Task Update(TEntity entity);
          Task Delete(TEntity entity);
 
+        Task SaveChangesAsync();
     }
 }

@@ -44,14 +44,14 @@ namespace ECommerece.Application.Services.CategoryServices
             return cat.Adapt<GetCategoryDto>();
         }
         public async Task AddCategory(AddCategoryDto CategoryDto) {
-            Category category = new Category() { CategoryName = CategoryDto.CategoryName, CategoryDescription = CategoryDto.CategoryDescription };
+            Category category = new Category() { Name = CategoryDto.CategoryName, Description = CategoryDto.CategoryDescription };
             await _categoryRepository.Add(category);
         }
         public async Task UpdateCategory(UpdateCategoryDto CategoryDto)
         {
             var category = await _categoryRepository.GetById(CategoryDto.Id);
-            category.CategoryName = CategoryDto.CategoryName;
-            category.CategoryDescription = CategoryDto.CategoryDescription;
+            category.Name = CategoryDto.CategoryName;
+            category.Description = CategoryDto.CategoryDescription;
             await _categoryRepository.Update(category);
         }
         public async Task DeleteCategory(int id) { 

@@ -15,7 +15,5 @@ namespace ECommerece.Application.IRepositories
         public Task SoftDelete(Product entity);
 
         // TODO should it be in IGenericRepository<>
-
-        public Task SaveChanges();
     }
 }
