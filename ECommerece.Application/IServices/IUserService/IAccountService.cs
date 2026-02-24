@@ -11,5 +11,7 @@ namespace ECommerece.Application.IServices.IUserService
         Task<AuthDto> LoginAsync(LoginDto loginDto);
 
         Task<AuthDto> RegisterAsync(RegisterDto registerDto);
+
+        Task<AuthDto> LogoutAsync();
     }
 }
