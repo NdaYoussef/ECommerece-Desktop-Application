@@ -13,6 +13,7 @@ namespace ECommerece.Infrastructure.Configurations
         {
             builder.HasKey(oi => oi.Id);
             builder.Property(oi => oi.UnitPrice).IsRequired().HasColumnType("decimal(18,2)");
+            builder.HasQueryFilter(oi => !oi.IsDeleted);
 
             // OrderItem- product
             builder.HasOne(oi => oi.Product)

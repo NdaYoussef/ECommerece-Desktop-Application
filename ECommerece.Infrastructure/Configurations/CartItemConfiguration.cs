@@ -19,6 +19,8 @@ namespace ECommerece.Infrastructure.Configurations
             builder.Property(ci => ci.UnitPrice)
                 .IsRequired()
                 .HasColumnType("decimal(18,2)");
+            builder.HasQueryFilter(ci => !ci.IsDeleted);
+
 
 
             //// Many-to-One: CartItem -> Product

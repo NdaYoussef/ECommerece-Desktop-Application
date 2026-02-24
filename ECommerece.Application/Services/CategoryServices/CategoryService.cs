@@ -48,7 +48,7 @@ namespace ECommerece.Application.Services.CategoryServices
             if(string.IsNullOrWhiteSpace(CategoryDto.Name)){
                 throw new Exception($"Category name is required");
             }
-            var existCategory = _categoryRepository.GetByName(CategoryDto.Name);
+            var existCategory = await _categoryRepository.GetByName(CategoryDto.Name);
             if (existCategory != null)
             {
                 throw new Exception($"Category name already exist");
