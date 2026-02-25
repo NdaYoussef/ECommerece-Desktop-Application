@@ -1,10 +1,10 @@
-﻿using ECommerece.Domain.BaseModel;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
+using ECommerece.Domain.BaseModel;
 
 namespace ECommerece.Domain.Entities
 {
-    public class Product :BaseClass<int>
+    public class Product : BaseClass<int>
     {
         public string? Label { get; set; }
 
@@ -18,13 +18,13 @@ namespace ECommerece.Domain.Entities
 
         // FK
         public int CategoryId { get; set; }
+
         // Navigation
         public Category? Category { get; set; }
 
         // Navigation
-         public List<OrderItem>? OrderItems { get; set; }
+        public List<OrderItem>? OrderItems { get; set; }
 
-        public List<CartItem> CartItems { get; set; }
-
+        public List<CartItem>? CartItems { get; set; }
     }
 }
