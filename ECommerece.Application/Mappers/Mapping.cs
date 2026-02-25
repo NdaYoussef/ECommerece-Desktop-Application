@@ -1,15 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using ECommerece.Application.DTOs.ProductDto;
 using ECommerece.Application.DTOs.UserDto;
 using ECommerece.Domain.Entities;
 using Mapster;
-using System;
-using System.Collections.Generic;
-using System.Net.Sockets;
-using System.Text;
 using ECommerece.Application.DTOs.OrderDtos;
+using ECommerece.Application.DTOs.CategoryDto;
 
 namespace ECommerece.Application.Mappers
 {
@@ -27,6 +21,10 @@ namespace ECommerece.Application.Mappers
             TypeAdapterConfig<CreateOrderItemDto, OrderItem>.NewConfig();
 
 
+            TypeAdapterConfig<Category, GetCategoryDto>.NewConfig()
+                .Map(dest => dest.ProductCount, src => src.Products != null ? src.Products.Count : 0);
+
+
 /*
             Start product mapping
             */
@@ -38,6 +36,9 @@ namespace ECommerece.Application.Mappers
                 )
                 .Map(d => d.IsInStock, s => s.StockQuantity > 0);
 
+
+
+
             TypeAdapterConfig<Product, ProductDetailsDto>
                 .NewConfig()
                 .Map(
@@ -48,8 +49,6 @@ namespace ECommerece.Application.Mappers
             End product mapping
             */
 
-            TypeAdapterConfig<Category, GetCategoryDto>.NewConfig()
-                .Map(dest => dest.ProductCount, src => src.Products != null ? src.Products.Count : 0);
         }
 
     }

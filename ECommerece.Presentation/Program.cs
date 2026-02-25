@@ -79,6 +79,8 @@ namespace ECommerece.Presentation
                         services.AddScoped<IAccountService, AccountService>();
                         services.AddScoped<ICategoryRepository, CategoryRepository>();
                         services.AddScoped<ICategoryServices, CategoryService>();
+                        services.AddScoped<IProductRepository, ProductRepository>();
+                        services.AddScoped<IProductService, ProductService>();
 
                         // Infrastructure Layer
                         services.AddDbContext<ECommerceDbContext>(options =>
