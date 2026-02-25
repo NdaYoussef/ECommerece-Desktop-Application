@@ -9,7 +9,7 @@ namespace ECommerece.Application.DTOs.OrderDtos
     public class OrderDto
     {
         public int Id { get; set; }
-        public string Username { get; set; } 
+        public User user { get; set; } 
         public string ShippingAddress { get; set; } = default!;
         public decimal TotalAmount { get; set; }
         public decimal ShippingCost { get; set; }
@@ -18,6 +18,7 @@ namespace ECommerece.Application.DTOs.OrderDtos
         public PaymentStatus PaymentStatus { get; set; }
         public DateTime OrderDate { get; set; }
 
-        public List<OrderItemDto> Items { get; set; } 
+        public List<OrderItemDto> Items { get; set; }
+        
     }
 }
