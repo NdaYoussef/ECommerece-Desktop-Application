@@ -16,6 +16,7 @@ namespace ECommerece.Infrastructure.Configurations
             builder.Property(o=>o.ShippingAddress).HasMaxLength(500);
             builder.Property(o=>o.discountcode).HasMaxLength(4);
             builder.Property(s => s.ShippingCost).HasPrecision(18, 2);
+            builder.HasQueryFilter(o => !o.IsDeleted);
 
             ////order - user 
             //builder.HasOne(o => o.User)

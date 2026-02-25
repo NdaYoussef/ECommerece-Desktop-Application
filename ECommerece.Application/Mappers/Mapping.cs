@@ -1,4 +1,5 @@
-﻿using ECommerece.Application.DTOs.UserDto;
+﻿using ECommerece.Application.DTOs.CategoryDto;
+using ECommerece.Application.DTOs.UserDto;
 using ECommerece.Domain.Entities;
 using Mapster;
 using System;
@@ -13,6 +14,9 @@ namespace ECommerece.Application.Mappers
         {
             TypeAdapterConfig<User, RegisterDto>.NewConfig();
             TypeAdapterConfig<User, LoginDto>.NewConfig();
+
+            TypeAdapterConfig<Category, GetCategoryDto>.NewConfig()
+                .Map(dest => dest.ProductCount, src => src.Products != null ? src.Products.Count : 0);
         }
 
     }

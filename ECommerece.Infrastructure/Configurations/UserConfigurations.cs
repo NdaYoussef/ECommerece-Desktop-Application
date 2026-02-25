@@ -17,7 +17,7 @@ namespace ECommerece.Infrastructure.Configurations
             builder.Property(p => p.Password).IsRequired().HasMaxLength(100);
             builder.Property(d => d.IsDeleted).HasDefaultValue(false);
             builder.Property(r => r.Role).IsRequired();
-
+            builder.HasQueryFilter(u => !u.IsDeleted);
 
             //user - order
             builder.HasMany(o => o.Orders)

@@ -1,6 +1,7 @@
 ﻿using ECommerece.Application.DTOs.UserDto;
 using ECommerece.Application.IServices.IUserService;
 using ECommerece.Domain.Enums;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -29,10 +30,13 @@ namespace ECommerece.Presentation.Forms.UserForms
         private Button btnBackToLogin;
 
         private readonly IAccountService _accountService;
+        private readonly IServiceProvider _serviceProvider;
 
-        public RegisterForm(IAccountService accountService)
+
+        public RegisterForm(IAccountService accountService, IServiceProvider serviceProvider)
         {
             _accountService = accountService;
+            _serviceProvider = serviceProvider;
             InitializeComponents();
         }
 
@@ -338,9 +342,10 @@ namespace ECommerece.Presentation.Forms.UserForms
                 MessageBox.Show("Account created successfully! Please login.", "Success",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                var loginForm = new LoginForm(_accountService);
-                loginForm.Show();
-                this.Close();
+                var loginForm = _serviceProvider.GetRequiredService<LoginForm>();
+                this.Hide();
+                loginForm.ShowDialog();
+                this.Show();
             }
             else
             {
@@ -354,7 +359,7 @@ namespace ECommerece.Presentation.Forms.UserForms
 
         private void BtnBackToLogin_Click(object sender, EventArgs e)
         {
-            var loginForm = new LoginForm(_accountService);
+            var loginForm = new LoginForm(_accountService,_serviceProvider);
             loginForm.Show();
             this.Close();
         }
