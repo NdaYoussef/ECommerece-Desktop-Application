@@ -24,6 +24,7 @@ namespace ECommerece.Infrastructure.Configurations
             builder.ToTable(
                 t=>t.HasCheckConstraint("CK_Product_StockQuantity_Positive","[StockQuantity] > 0")
                 );
+            builder.HasQueryFilter(p => !p.IsDeleted);
 
             //product - category
             builder.HasOne(p => p.Category)

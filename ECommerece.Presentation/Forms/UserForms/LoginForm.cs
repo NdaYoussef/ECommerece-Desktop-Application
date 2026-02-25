@@ -1,6 +1,7 @@
 ﻿using ECommerece.Application.DTOs.UserDto;
 using ECommerece.Application.IServices.IUserService;
 using ECommerece.Presentation.Forms.DashboardForms;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -22,10 +23,11 @@ namespace ECommerece.Presentation.Forms.UserForms
         private Button btnGoRegister;
         private Label lblDemo;
         private readonly IAccountService _accountService;
-
-        public LoginForm(IAccountService accountService)
+        private readonly IServiceProvider _serviceProvider;
+        public LoginForm(IAccountService accountService, IServiceProvider serviceProvider)
         {
             _accountService = accountService;
+            _serviceProvider = serviceProvider;
             InitializeComponents();
         }
 
@@ -283,9 +285,9 @@ namespace ECommerece.Presentation.Forms.UserForms
 
             if (result.IsAuthenticated)
             {
-                var dashboard = new DashboardForm();
-                dashboard.Show();
+                var dashboard = _serviceProvider.GetRequiredService<DashboardForm>();
                 this.Hide();
+                dashboard.ShowDialog();
             }
             else
             {
@@ -299,7 +301,7 @@ namespace ECommerece.Presentation.Forms.UserForms
 
         private void BtnGoRegister_Click(object sender, EventArgs e)
         {
-            var registerForm = new RegisterForm(_accountService);
+            var registerForm = _serviceProvider.GetRequiredService<RegisterForm>();
             registerForm.Show();
             this.Hide();
         }
