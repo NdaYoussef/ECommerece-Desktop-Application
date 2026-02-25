@@ -1,6 +1,7 @@
 ﻿using ECommerece.Application.IServices.ICategoryService;
 using ECommerece.Presentation.Forms.DashboardForms;
 using ECommerece.Presentation.Forms.ProductForms;
+using ECommerece.Presentation.Forms.UserForms;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Drawing;
@@ -109,6 +110,7 @@ namespace ECommerece.Presentation.Forms.CategoryForms
             };
             btnLogout.FlatAppearance.BorderSize = 0;
             btnLogout.FlatAppearance.MouseOverBackColor = Color.FromArgb(30, 41, 59);
+            btnLogout.Click += BtnLogout_Click;
             sidebarPanel.Controls.Add(btnLogout);
 
             // ===== MAIN PANEL =====
@@ -299,6 +301,12 @@ namespace ECommerece.Presentation.Forms.CategoryForms
                 dashboardForm.Show();
                 this.Hide();
             };
+            btnProducts.Click += (s, e) =>
+            {
+                var productForm = _serviceProvider.GetRequiredService<AdminProductsForm>();
+                productForm.Show();
+                this.Hide();
+            };
 
             // product button
             btnProducts.Click += (s, e) =>
@@ -406,5 +414,18 @@ namespace ECommerece.Presentation.Forms.CategoryForms
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void BtnLogout_Click(object sender, EventArgs e)
+        {
+            var confirm = MessageBox.Show("Are you sure you want to logout?", "Logout",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (confirm == DialogResult.Yes)
+            {
+                var loginForm = _serviceProvider.GetRequiredService<LoginForm>();
+                loginForm.Show();
+                this.Close();
+            }
+        }
+
     }
 }

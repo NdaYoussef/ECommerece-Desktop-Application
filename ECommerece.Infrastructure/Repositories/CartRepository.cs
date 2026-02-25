@@ -10,45 +10,67 @@ namespace ECommerece.Infrastructure.Repositories
 {
     public class CartRepository : ICartRepository
     {
-        //AppDbContext _Context;
-        //public CartRepository(AppDbContext Context)
-        //{
-        //    Context = _Context;
-        //}
+        ECommerceDbContext _Context;
+        public CartRepository(ECommerceDbContext Context)
+        {
+            _Context = Context;
+        }
+
         public Task Add(Cart entity)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task ClearCart(int cartId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Delete(Cart entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<Cart> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Cart> GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task SaveChangesAsync()
-        {
-            throw new NotImplementedException();
+            _Context.Carts.Add(entity);
+            return Task.CompletedTask;
         }
 
         public Task Update(Cart entity)
         {
-            throw new NotImplementedException();
+            _Context.Carts.Update(entity);
+            return Task.CompletedTask;
         }
+
+
+        public Task Delete(Cart entity)
+        {
+            _Context.Carts.Remove(entity);
+            return Task.CompletedTask;
+        }
+
+
+       
+
+
+        public IQueryable<Cart> GetAll()
+        {
+            return _Context.Carts.Include(c => c.CartItems)
+                .ThenInclude(ci => ci.Product);
+        }
+
+        public Task<Cart> GetById(int id)
+        {
+            return _Context.Carts.Include(c => c.CartItems)
+                .ThenInclude(ci => ci.Product)
+                .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        //public void SaveChanges()
+        //{
+        //   
+        //}
+
+        public async Task SaveChangesAsync()
+        {
+            await _Context.SaveChangesAsync();
+        }
+
+      public async Task ClearCart(int cartId)
+{
+    var items = await _Context.CartItems
+        .Where(ci => ci.CartId == cartId)
+        .ToListAsync();
+
+    _Context.CartItems.RemoveRange(items);
+    await _Context.SaveChangesAsync();
+}
     }
 }
 
