@@ -4,6 +4,7 @@ using ECommerece.Domain.Entities;
 using Mapster;
 using ECommerece.Application.DTOs.OrderDtos;
 using ECommerece.Application.DTOs.CategoryDto;
+using ECommerece.Application.DTOs.CartDto;
 
 namespace ECommerece.Application.Mappers
 {
