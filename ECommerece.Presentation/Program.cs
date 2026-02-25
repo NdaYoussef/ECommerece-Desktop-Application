@@ -49,7 +49,7 @@ namespace ECommerece.Presentation
                     services.AddTransient<RegisterForm>();
                     services.AddTransient<DashboardForm>();
                     services.AddTransient<CategoryForm>();
-                    services.AddTransient<CustomerDashboardForm>(); // ✅ ضيف
+                    services.AddTransient<CustomerDashboardForm>(); 
 
                     // Application Layer
                     services.AddScoped<IUserRepository, UserRepository>();
