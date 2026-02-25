@@ -29,12 +29,13 @@ namespace ECommerece.Presentation.Forms.UserForms
         private readonly IAccountService _accountService;
         private readonly IServiceProvider _serviceProvider;
 
-        public RegisterForm(IAccountService accountService, IServiceProvider serviceProvider) 
+        public RegisterForm(IAccountService accountService, IServiceProvider serviceProvider)
         {
             _accountService = accountService;
             _serviceProvider = serviceProvider;
             InitializeComponents();
         }
+
         private void InitializeComponents()
         {
             this.Text = "E-Commerce - Register";
@@ -292,7 +293,6 @@ namespace ECommerece.Presentation.Forms.UserForms
                 MessageBox.Show("Account created successfully! Please login.", "Success",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // ✅ روح للـ LoginForm
                 var loginForm = _serviceProvider.GetRequiredService<LoginForm>();
                 loginForm.Show();
                 this.Close();
@@ -309,7 +309,6 @@ namespace ECommerece.Presentation.Forms.UserForms
 
         private void BtnBackToLogin_Click(object sender, EventArgs e)
         {
-            // ✅ بس Close والـ LoginForm هترجع تلقائياً
             this.Close();
         }
     }

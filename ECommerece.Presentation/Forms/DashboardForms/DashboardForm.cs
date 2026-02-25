@@ -19,6 +19,7 @@ namespace ECommerece.Presentation.Forms.DashboardForms
             InitializeComponents();
             LoadStats();
         }
+
         // ===== CONTROLS =====
         private Panel sidebarPanel;
         private Panel mainPanel;
@@ -42,8 +43,6 @@ namespace ECommerece.Presentation.Forms.DashboardForms
         private Panel cardTotalCustomers;
         private Panel cardTotalRevenue;
 
-       
-
         private void InitializeComponents()
         {
             // ===== FORM =====
@@ -64,7 +63,6 @@ namespace ECommerece.Presentation.Forms.DashboardForms
             };
             this.Controls.Add(sidebarPanel);
 
-            // Logo Label in Sidebar
             var lblLogo = new Label
             {
                 Text = "🛒  E-Commerce",
@@ -228,7 +226,6 @@ namespace ECommerece.Presentation.Forms.DashboardForms
             dgv.Columns.Add("Amount", "Amount");
             dgv.Columns.Add("Status", "Status");
 
-            // Demo Data
             dgv.Rows.Add("#1001", "Ahmed Ali", "2024-01-15", "$250.00", "✅ Delivered");
             dgv.Rows.Add("#1002", "Sara Mohamed", "2024-01-16", "$180.00", "🔄 Processing");
             dgv.Rows.Add("#1003", "Omar Hassan", "2024-01-17", "$320.00", "✅ Delivered");
@@ -236,14 +233,15 @@ namespace ECommerece.Presentation.Forms.DashboardForms
 
             mainPanel.Controls.Add(dgv);
 
-            //Event Onclick Category
+            // Event OnClick Category
             btnCategories.Click += (s, e) =>
             {
                 var categoryForm = _serviceProvider.GetRequiredService<CategoryForm>();
                 categoryForm.Show();
                 this.Hide();
             };
-            //Event Onclick Product
+
+            // Event OnClick Product
             btnProducts.Click += (s, e) =>
             {
                 var productForm = _serviceProvider.GetRequiredService<AdminProductsForm>();
@@ -251,7 +249,6 @@ namespace ECommerece.Presentation.Forms.DashboardForms
                 this.Hide();
             };
         }
-
 
         private Button CreateSidebarButton(string text, int y, bool isActive)
         {
@@ -290,12 +287,10 @@ namespace ECommerece.Presentation.Forms.DashboardForms
                 using (Pen pen = new Pen(Color.FromArgb(226, 232, 240), 1))
                     e.Graphics.DrawRectangle(pen, 0, 0, card.Width - 1, card.Height - 1);
 
-                // Accent top border
                 using (SolidBrush brush = new SolidBrush(accentColor))
                     e.Graphics.FillRectangle(brush, 0, 0, card.Width, 4);
             };
 
-            // Icon
             var lblIcon = new Label
             {
                 Text = icon,
@@ -306,7 +301,6 @@ namespace ECommerece.Presentation.Forms.DashboardForms
             };
             card.Controls.Add(lblIcon);
 
-            // Value
             var lblValue = new Label
             {
                 Text = value,
@@ -318,7 +312,6 @@ namespace ECommerece.Presentation.Forms.DashboardForms
             };
             card.Controls.Add(lblValue);
 
-            // Title
             var lblTitle = new Label
             {
                 Text = title,
@@ -335,7 +328,6 @@ namespace ECommerece.Presentation.Forms.DashboardForms
 
         private void LoadStats()
         {
-           
             UpdateCardValue(cardTotalProducts, "128");
             UpdateCardValue(cardTotalOrders, "54");
             UpdateCardValue(cardTotalCustomers, "320");
