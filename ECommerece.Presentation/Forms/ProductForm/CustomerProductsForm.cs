@@ -7,6 +7,7 @@ using ECommerece.Application.IServices;
 using ECommerece.Application.Services.ProductServices;
 using ECommerece.Infrastructure.Repositories;
 using ECommerece.Presentation.Forms.DashboardForms;
+using ECommerece.Presentation.Forms.UserForms;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ECommerece.Presentation.Forms.ProductForms
@@ -42,7 +43,10 @@ namespace ECommerece.Presentation.Forms.ProductForms
 
         // removed??
 
-        public CustomerProductsForm(IProductService productService, IServiceProvider serviceProvider)
+        public CustomerProductsForm(
+            IProductService productService,
+            IServiceProvider serviceProvider
+        )
         {
             _productService = productService;
             _serviceProvider = serviceProvider;
@@ -91,7 +95,7 @@ namespace ECommerece.Presentation.Forms.ProductForms
             sidebarPanel.Controls.Add(separator);
 
             // Sidebar Buttons
-           btnDashboard = CreateSidebarButton("📊  Dashboard", 100, false);
+            btnDashboard = CreateSidebarButton("📊  Dashboard", 100, false);
             btnProducts = CreateSidebarButton("🛍️  Browse Products", 155, true);
             btnCart = CreateSidebarButton("🛒  Cart", 210, false);
             btnOrders = CreateSidebarButton("📦  My Orders", 265, false);
@@ -99,7 +103,7 @@ namespace ECommerece.Presentation.Forms.ProductForms
             sidebarPanel.Controls.Add(btnDashboard);
             btnDashboard.Click += (s, e) =>
             {
-                var categoryForm = _serviceProvider.GetRequiredService<DashboardForm>();
+                var categoryForm = _serviceProvider.GetRequiredService<CustomerDashboardForm>();
                 categoryForm.Show();
                 this.Hide();
             };
@@ -345,17 +349,14 @@ namespace ECommerece.Presentation.Forms.ProductForms
         }
 
         // ── Load image without freezing UI ────────────────────────
-        private async void LoadImageAsync(PictureBox box, string? url)
+        private async void LoadImageAsync(PictureBox box, string? filePath)
         {
-            if (string.IsNullOrWhiteSpace(url))
+            if (string.IsNullOrWhiteSpace(filePath) || !System.IO.File.Exists(filePath))
                 return;
             try
             {
-                using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(5) };
-                var bytes = await client.GetByteArrayAsync(url);
-                using var ms = new System.IO.MemoryStream(bytes);
-                if (!box.IsDisposed)
-                    box.Image = Image.FromStream(ms);
+                using var img = Image.FromFile(filePath);
+                box.Image = new Bitmap(img);
             }
             catch
             { /* broken URL — placeholder stays */
@@ -429,9 +430,8 @@ namespace ECommerece.Presentation.Forms.ProductForms
 
             if (confirm == DialogResult.Yes)
             {
-                // افتح الـ LoginForm وسكر الـ Dashboard
-                // var login = Program.ServiceProvider.GetRequiredService<LoginForm>();
-                // login.Show();
+                var loginForm = _serviceProvider.GetRequiredService<LoginForm>();
+                loginForm.Show();
                 this.Close();
             }
         }

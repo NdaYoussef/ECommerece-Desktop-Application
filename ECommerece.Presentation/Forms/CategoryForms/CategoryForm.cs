@@ -1,5 +1,6 @@
 ﻿using ECommerece.Application.IServices.ICategoryService;
 using ECommerece.Presentation.Forms.DashboardForms;
+using ECommerece.Presentation.Forms.ProductForms;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Drawing;
@@ -296,6 +297,14 @@ namespace ECommerece.Presentation.Forms.CategoryForms
             {
                 var dashboardForm = _serviceProvider.GetRequiredService<DashboardForm>();
                 dashboardForm.Show();
+                this.Hide();
+            };
+
+            // product button
+            btnProducts.Click += (s, e) =>
+            {
+                var productForm = _serviceProvider.GetRequiredService<AdminProductsForm>();
+                productForm.Show();
                 this.Hide();
             };
 
