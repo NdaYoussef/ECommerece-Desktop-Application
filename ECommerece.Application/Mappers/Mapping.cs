@@ -4,6 +4,7 @@ using ECommerece.Domain.Entities;
 using Mapster;
 using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Text;
 
 namespace ECommerece.Application.Mappers
@@ -14,11 +15,12 @@ namespace ECommerece.Application.Mappers
         {
             TypeAdapterConfig<User, RegisterDto>.NewConfig();
             TypeAdapterConfig<User, LoginDto>.NewConfig();
-            TypeAdapterConfig<Order, OrderDto>.NewConfig()
-               .Map(dest => dest.Username, src => src.User.Name);
+            TypeAdapterConfig<Order, OrderDto>.NewConfig().TwoWays()
+                .Map(dest => dest.Items, src => src.OrderItems) ;
             TypeAdapterConfig<CreateOrderDto,Order>.NewConfig();
             TypeAdapterConfig<UpdateOrderDto, Order>.NewConfig();
-            TypeAdapterConfig<OrderItemDto, OrderItem>.NewConfig();
+            TypeAdapterConfig< OrderItem, OrderItemDto>.NewConfig().TwoWays();
+            TypeAdapterConfig<CreateOrderItemDto, OrderItem>.NewConfig();
 
         }
 

@@ -15,7 +15,7 @@ namespace ECommerece.Infrastructure.Configurations
             builder.Property(oi => oi.UnitPrice).IsRequired().HasColumnType("decimal(18,2)");
 
             builder.HasOne(oi => oi.Product)
-                   .WithMany(p => p.orderitems)
+                   .WithMany(p => p.OrderItems)
                    .HasForeignKey(oi => oi.ProductId)
                    .OnDelete(DeleteBehavior.Restrict);
 

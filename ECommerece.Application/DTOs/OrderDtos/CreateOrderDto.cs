@@ -10,6 +10,6 @@ namespace ECommerece.Application.DTOs.OrderDtos
         public string ShippingAddress { get; set; } = default!;
         public decimal ShippingCost { get; set; } = 0;
         public string? discountcode { get; set; }
-       public List<OrderItemDto> Items { get; set; } = new();
+       public List<CreateOrderItemDto> Items { get; set; } = new();
     }
 }

@@ -62,7 +62,7 @@ namespace ECommerece.Application.Services.OrderServices
                 throw new Exception("Only pending orders can be rejected");
             foreach (var item in order.Items)
             {
-                item.Product.Stock += item.Quantity;
+                item.product.StockQuantity += item.Quantity;
             }
 
             order.Status = OrderStatus.Rejected;
