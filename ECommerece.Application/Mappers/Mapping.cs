@@ -1,13 +1,10 @@
-<<<<<<< HEAD
 ﻿using ECommerece.Application.DTOs.CategoryDto;
 
 ﻿using ECommerece.Application.DTOs.OrderDtos;
 
 ﻿using ECommerece.Application.DTOs.CategoryDto;
 
-=======
 using ECommerece.Application.DTOs.ProductDto;
->>>>>>> 3f97830506747a615cba44e7fba9026b6c8624d7
 using ECommerece.Application.DTOs.UserDto;
 using ECommerece.Domain.Entities;
 using Mapster;

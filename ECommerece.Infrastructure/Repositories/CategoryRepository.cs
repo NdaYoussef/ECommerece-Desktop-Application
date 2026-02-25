@@ -18,7 +18,7 @@ namespace ECommerece.Infrastructure.Repositories
 
         public IQueryable<Category> GetAll()
         {
-            return _dbcontext.Categories;
+            return _dbcontext.Categories.Include(c => c.Products);
         }
         public async Task<Category> GetById(int id)
         {
