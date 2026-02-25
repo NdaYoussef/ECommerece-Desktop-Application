@@ -18,6 +18,7 @@ namespace ECommerece.Application.Mappers
                .Map(dest => dest.Username, src => src.User.Name);
             TypeAdapterConfig<CreateOrderDto,Order>.NewConfig();
             TypeAdapterConfig<UpdateOrderDto, Order>.NewConfig();
+            TypeAdapterConfig<OrderItemDto, OrderItem>.NewConfig();
 
         }
 
