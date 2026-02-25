@@ -28,7 +28,6 @@ namespace ECommerece.Presentation.Forms.UserForms
         private readonly IAccountService _accountService;
         private readonly IServiceProvider _serviceProvider;
 
-        // ✅ Constructor واحد بس
         public LoginForm(IAccountService accountService, IServiceProvider serviceProvider)
         {
             _accountService = accountService;
@@ -192,7 +191,6 @@ namespace ECommerece.Presentation.Forms.UserForms
             // DEMO LABEL
             lblDemo = new Label
             {
-               // Text = "Demo: Use admin@admin.com / admin123",
                 Font = new Font("Segoe UI", 9f),
                 ForeColor = Color.FromArgb(148, 163, 184),
                 AutoSize = true,
@@ -318,14 +316,12 @@ namespace ECommerece.Presentation.Forms.UserForms
 
             if (result.IsAuthenticated)
             {
-                // ✅ Admin → AdminDashboard
                 if (result.Role == UserRoles.Admin.ToString())
                 {
                     var dashboard = _serviceProvider.GetRequiredService<DashboardForm>();
                     dashboard.Show();
                     this.Hide();
                 }
-                // ✅ Customer → CustomerDashboard
                 else
                 {
                     var customerDashboard = _serviceProvider.GetRequiredService<CustomerDashboardForm>();
@@ -343,6 +339,7 @@ namespace ECommerece.Presentation.Forms.UserForms
                 btnLogin.Text = "Login";
             }
         }
+
         private void BtnGoRegister_Click(object sender, EventArgs e)
         {
             var registerForm = _serviceProvider.GetRequiredService<RegisterForm>();

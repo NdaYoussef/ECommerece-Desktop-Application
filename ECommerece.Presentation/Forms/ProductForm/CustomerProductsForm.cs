@@ -7,6 +7,7 @@ using ECommerece.Application.IServices;
 using ECommerece.Application.Services.ProductServices;
 using ECommerece.Infrastructure.Repositories;
 using ECommerece.Presentation.Forms.DashboardForms;
+using ECommerece.Presentation.Forms.UserForms;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ECommerece.Presentation.Forms.ProductForms
@@ -15,6 +16,7 @@ namespace ECommerece.Presentation.Forms.ProductForms
     {
         // private readonly IProductRepository _productRepository = new ProductRepository();
         private readonly IProductService _productService;
+        private readonly IServiceProvider _serviceProvider;
 
         // ── Colors ────────────────────────────────────────────────
         static readonly Color Navy = Color.FromArgb(15, 23, 42);
@@ -32,7 +34,7 @@ namespace ECommerece.Presentation.Forms.ProductForms
         private Button btnDashboard,
             btnProducts,
             btnOrders,
-            btnCustomers,
+            btnCart,
             btnLogout;
 
         // Header
@@ -40,15 +42,14 @@ namespace ECommerece.Presentation.Forms.ProductForms
             lblWelcome;
 
         // removed??
-        private Panel cardTotalProducts,
-            cardInStock,
-            cardLowStock,
-            cardOutOfStock;
-        private DataGridView dgvProducts;
 
-        public CustomerProductsForm(IProductService productService)
+        public CustomerProductsForm(
+            IProductService productService,
+            IServiceProvider serviceProvider
+        )
         {
             _productService = productService;
+            _serviceProvider = serviceProvider;
             InitializeComponents();
             LoadProducts();
         }
@@ -94,19 +95,24 @@ namespace ECommerece.Presentation.Forms.ProductForms
             sidebarPanel.Controls.Add(separator);
 
             // Sidebar Buttons
-            btnDashboard = CreateSidebarButton("📊  Dashboard", 90, false);
-            btnProducts = CreateSidebarButton("📦  Products", 145, true);
-            btnOrders = CreateSidebarButton("🧾  Orders", 200, false);
-            btnCustomers = CreateSidebarButton("👥  Customers", 255, false);
+            btnDashboard = CreateSidebarButton("📊  Dashboard", 100, false);
+            btnProducts = CreateSidebarButton("🛍️  Browse Products", 155, true);
+            btnCart = CreateSidebarButton("🛒  Cart", 210, false);
+            btnOrders = CreateSidebarButton("📦  My Orders", 265, false);
 
             sidebarPanel.Controls.Add(btnDashboard);
-            btnDashboard.Click += (s, e) => NavigateTo<DashboardForm>();
+            btnDashboard.Click += (s, e) =>
+            {
+                var categoryForm = _serviceProvider.GetRequiredService<CustomerDashboardForm>();
+                categoryForm.Show();
+                this.Hide();
+            };
             sidebarPanel.Controls.Add(btnProducts);
             // btnProducts.Click += btnProducts_click;
             sidebarPanel.Controls.Add(btnOrders);
             // btnOrders.Click +=  (s,e)=> NavigateTo<OrderForm>();
-            sidebarPanel.Controls.Add(btnCustomers);
-            // btnCustomers.Click += (s,e)=> NavigateTo<CustomerForm>();
+            sidebarPanel.Controls.Add(btnCart);
+            // btnCart.Click += (s,e)=> NavigateTo<CartForm>();
 
             // Logout Button at bottom
             btnLogout = new Button
@@ -206,7 +212,7 @@ namespace ECommerece.Presentation.Forms.ProductForms
         }
 
         // ── Build one card per product ────────────────────────────
-        private void LoadProductCards()
+        private void LoadProducts()
         {
             cardContainer.Controls.Clear();
 
@@ -325,9 +331,9 @@ namespace ECommerece.Presentation.Forms.ProductForms
                 // ── Click → open details ──────────────────────────
                 // Wire click on card AND all child controls so the
                 // whole card area is clickable
-                EventHandler onClick = (s, e) =>
+                EventHandler onClick = async (s, e) =>
                 {
-                    var details = _productService.GetProductDetails(product.Label ?? "");
+                    var details = await _productService.GetProductDetails(product.Label ?? "");
                     if (details == null)
                         return;
                     using var detailsForm = new ProductDetailsForm(details);
@@ -343,17 +349,14 @@ namespace ECommerece.Presentation.Forms.ProductForms
         }
 
         // ── Load image without freezing UI ────────────────────────
-        private async void LoadImageAsync(PictureBox box, string? url)
+        private async void LoadImageAsync(PictureBox box, string? filePath)
         {
-            if (string.IsNullOrWhiteSpace(url))
+            if (string.IsNullOrWhiteSpace(filePath) || !System.IO.File.Exists(filePath))
                 return;
             try
             {
-                using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(5) };
-                var bytes = await client.GetByteArrayAsync(url);
-                using var ms = new System.IO.MemoryStream(bytes);
-                if (!box.IsDisposed)
-                    box.Image = Image.FromStream(ms);
+                using var img = Image.FromFile(filePath);
+                box.Image = new Bitmap(img);
             }
             catch
             { /* broken URL — placeholder stays */
@@ -394,18 +397,6 @@ namespace ECommerece.Presentation.Forms.ProductForms
             // form.FormClosed += (s, e) => this.Show();
         }
 
-        private void BtnAdd_Click(object sender, EventArgs e)
-        {
-            using (var scope = Program.host.Services.CreateScope())
-            {
-                var addForm = scope.ServiceProvider.GetRequiredService<AddProductForm>();
-                if (addForm.ShowDialog() == DialogResult.OK)
-                {
-                    LoadProducts(); // refresh grid
-                }
-            }
-        }
-
         private Button CreateSidebarButton(string text, int y, bool isActive)
         {
             var btn = new Button
@@ -428,136 +419,6 @@ namespace ECommerece.Presentation.Forms.ProductForms
             return btn;
         }
 
-        private Panel CreateStatCard(
-            string title,
-            string value,
-            string icon,
-            Color accentColor,
-            int x,
-            int y
-        )
-        {
-            var card = new Panel
-            {
-                Size = new Size(185, 140),
-                Location = new Point(x, y),
-                BackColor = Color.White,
-                Cursor = Cursors.Default,
-            };
-            card.Paint += (s, e) =>
-            {
-                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                using (Pen pen = new(Color.FromArgb(226, 232, 240), 1))
-                    e.Graphics.DrawRectangle(pen, 0, 0, card.Width - 1, card.Height - 1);
-
-                // Accent top border
-                using (SolidBrush brush = new(accentColor))
-                    e.Graphics.FillRectangle(brush, 0, 0, card.Width, 4);
-            };
-
-            // Icon
-            var lblIcon = new Label
-            {
-                Text = icon,
-                Font = new Font("Segoe UI", 22f),
-                AutoSize = true,
-                Location = new Point(15, 20),
-                BackColor = Color.Transparent,
-            };
-            card.Controls.Add(lblIcon);
-
-            // Value
-            var lblValue = new Label
-            {
-                Text = value,
-                Font = new Font("Segoe UI", 22f, FontStyle.Bold),
-                ForeColor = Color.FromArgb(15, 23, 42),
-                AutoSize = true,
-                Location = new Point(15, 65),
-                BackColor = Color.Transparent,
-            };
-            card.Controls.Add(lblValue);
-
-            // Title
-            var lblTitle = new Label
-            {
-                Text = title,
-                Font = new Font("Segoe UI", 9f),
-                ForeColor = Color.FromArgb(100, 116, 139),
-                AutoSize = true,
-                Location = new Point(15, 108),
-                BackColor = Color.Transparent,
-            };
-            card.Controls.Add(lblTitle);
-
-            return card;
-        }
-
-        private void LoadProducts()
-        {
-            dgvProducts.Rows.Clear();
-
-            var products = _productService.GetProductsList();
-            if (products == null || products.Count == 0)
-            {
-                UpdateCardValue(cardTotalProducts, "0");
-                UpdateCardValue(cardInStock, "0");
-                UpdateCardValue(cardLowStock, "0");
-                UpdateCardValue(cardOutOfStock, "0");
-                return;
-            }
-
-            // Use GetLowStockProducts to identify low-stock items
-            var lowStockLabels = new HashSet<string>(
-                _productService.GetLowStockProducts(5)?.ConvertAll(p => p.Label ?? "")
-                    ?? new List<string>()
-            );
-
-            int inStock = 0,
-                lowStock = 0,
-                outOfStock = 0;
-
-            foreach (var p in products)
-            {
-                string status;
-                if (!p.IsInStock)
-                {
-                    status = "Out of Stock";
-                    outOfStock++;
-                }
-                else if (p.Label != null && lowStockLabels.Contains(p.Label))
-                {
-                    status = "Low Stock";
-                    lowStock++;
-                    inStock++;
-                }
-                else
-                {
-                    status = "In Stock";
-                    inStock++;
-                }
-
-                dgvProducts.Rows.Add(p.Label, p.Price.ToString("C"), p.CategoryName, status);
-            }
-
-            UpdateCardValue(cardTotalProducts, products.Count.ToString());
-            UpdateCardValue(cardInStock, inStock.ToString());
-            UpdateCardValue(cardLowStock, lowStock.ToString());
-            UpdateCardValue(cardOutOfStock, outOfStock.ToString());
-        }
-
-        private void UpdateCardValue(Panel card, string value)
-        {
-            foreach (Control ctrl in card.Controls)
-            {
-                if (ctrl is Label lbl && lbl.Font.Size == 22f && lbl.Font.Bold)
-                {
-                    lbl.Text = value;
-                    break;
-                }
-            }
-        }
-
         private void BtnLogout_Click(object sender, EventArgs e)
         {
             var confirm = MessageBox.Show(
@@ -569,9 +430,8 @@ namespace ECommerece.Presentation.Forms.ProductForms
 
             if (confirm == DialogResult.Yes)
             {
-                // افتح الـ LoginForm وسكر الـ Dashboard
-                // var login = Program.ServiceProvider.GetRequiredService<LoginForm>();
-                // login.Show();
+                var loginForm = _serviceProvider.GetRequiredService<LoginForm>();
+                loginForm.Show();
                 this.Close();
             }
         }
