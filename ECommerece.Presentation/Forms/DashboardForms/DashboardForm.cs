@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ECommerece.Presentation.Forms.CategoryForms;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -7,6 +9,14 @@ namespace ECommerece.Presentation.Forms.DashboardForms
 {
     public class DashboardForm : Form
     {
+        private readonly IServiceProvider _serviceProvider;
+
+        public DashboardForm(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+            InitializeComponents();
+            LoadStats();
+        }
         // ===== CONTROLS =====
         private Panel sidebarPanel;
         private Panel mainPanel;
@@ -14,6 +24,7 @@ namespace ECommerece.Presentation.Forms.DashboardForms
 
         // Sidebar Buttons
         private Button btnDashboard;
+        private Button btnCategories;
         private Button btnProducts;
         private Button btnOrders;
         private Button btnCustomers;
@@ -29,11 +40,7 @@ namespace ECommerece.Presentation.Forms.DashboardForms
         private Panel cardTotalCustomers;
         private Panel cardTotalRevenue;
 
-        public DashboardForm()
-        {
-            InitializeComponents();
-            LoadStats();
-        }
+       
 
         private void InitializeComponents()
         {
@@ -77,11 +84,13 @@ namespace ECommerece.Presentation.Forms.DashboardForms
 
             // Sidebar Buttons
             btnDashboard = CreateSidebarButton("📊  Dashboard", 90, true);
-            btnProducts = CreateSidebarButton("📦  Products", 145, false);
-            btnOrders = CreateSidebarButton("🧾  Orders", 200, false);
-            btnCustomers = CreateSidebarButton("👥  Customers", 255, false);
+            btnCategories = CreateSidebarButton("🗂️  Categories", 145, false);
+            btnProducts = CreateSidebarButton("📦  Products", 200, false);
+            btnOrders = CreateSidebarButton("🧾  Orders", 255, false);
+            btnCustomers = CreateSidebarButton("👥  Customers", 310, false);
 
             sidebarPanel.Controls.Add(btnDashboard);
+            sidebarPanel.Controls.Add(btnCategories);
             sidebarPanel.Controls.Add(btnProducts);
             sidebarPanel.Controls.Add(btnOrders);
             sidebarPanel.Controls.Add(btnCustomers);
@@ -224,7 +233,16 @@ namespace ECommerece.Presentation.Forms.DashboardForms
             dgv.Rows.Add("#1004", "Nour Ahmed", "2024-01-18", "$95.00", "⏳ Pending");
 
             mainPanel.Controls.Add(dgv);
+
+            //Event Onclick Category
+            btnCategories.Click += (s, e) =>
+            {
+                var categoryForm = _serviceProvider.GetRequiredService<CategoryForm>();
+                categoryForm.Show();
+                this.Hide();
+            };
         }
+
 
         private Button CreateSidebarButton(string text, int y, bool isActive)
         {
