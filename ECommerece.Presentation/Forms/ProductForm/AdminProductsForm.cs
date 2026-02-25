@@ -418,12 +418,12 @@ namespace ECommerece.Presentation.Forms.ProductForms
             var editForm = new EditProductForm(
                 scope.ServiceProvider.GetRequiredService<IProductService>(),
                 productId,
-                details?.Label ?? "",
-                details?.Description ?? "",
-                details?.Price ?? 0,
-                details?.StockQuantity ?? 0,
-                details?.ImageUrl ?? "",
-                details?.CategoryId ?? 0
+                details.Result?.Label ?? "",
+                details.Result?.Description ?? "",
+                details.Result?.Price ?? 0,
+                details.Result?.StockQuantity ?? 0,
+                details.Result?.ImageUrl ?? "",
+                details.Result?.CategoryId ?? 0
             );
 
             if (editForm.ShowDialog() == DialogResult.OK)

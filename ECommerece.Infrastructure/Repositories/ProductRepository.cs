@@ -40,7 +40,7 @@ namespace ECommerece.Infrastructure.Repositories
 
         public async Task<Product?> GetProductByLabel(string label)
         {
-            return await context.Products.Where(p => p.Label == label).FirstOrDefaultAsync();
+            return await context.Products.Where(p => p.Label == label).Include(p => p.Category).FirstOrDefaultAsync();
         }
 
         public async Task SaveChangesAsync()
