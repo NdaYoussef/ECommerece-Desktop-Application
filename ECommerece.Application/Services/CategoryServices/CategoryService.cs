@@ -49,9 +49,17 @@ namespace ECommerece.Application.Services.CategoryServices
                 throw new Exception($"Category name is required");
             }
             var existCategory = await _categoryRepository.GetByName(CategoryDto.Name);
-            if (existCategory != null)
+            if (existCategory != null && !existCategory.IsDeleted)
             {
                 throw new Exception($"Category name already exist");
+            }
+            if (existCategory != null && existCategory.IsDeleted)
+            {
+                existCategory.IsDeleted = false;
+                existCategory.Name = CategoryDto.Name;
+                existCategory.Description = CategoryDto.Description;
+                await _categoryRepository.Update(existCategory);
+                return;
             }
             Category category = new Category() { Name = CategoryDto.Name, Description = CategoryDto.Description };
             await _categoryRepository.Add(category);
@@ -59,6 +67,17 @@ namespace ECommerece.Application.Services.CategoryServices
         public async Task UpdateCategory(UpdateCategoryDto CategoryDto)
         {
             var category = await _categoryRepository.GetById(CategoryDto.Id);
+            if (category is null)
+            {
+                throw new Exception($"Category with id {CategoryDto.Id} not found");
+            }
+
+               var existCategory = await _categoryRepository.GetByName(CategoryDto.Name);
+            if (existCategory != null && existCategory.Id != CategoryDto.Id && !existCategory.IsDeleted)
+            {
+                throw new Exception("Category name already exists");
+            }
+
             category.Name = CategoryDto.Name;
             category.Description = CategoryDto.Description;
             await _categoryRepository.Update(category);

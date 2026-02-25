@@ -92,31 +92,29 @@ namespace ECommerece.Presentation.Forms.ProductForms
             // Sidebar Buttons
             btnDashboard = CreateSidebarButton("📊  Dashboard", 90, false);
             btnCategories = CreateSidebarButton("🗂️  Categories", 145, false);
-            btnProducts = CreateSidebarButton("📦  Products", 145, true);
-            btnOrders = CreateSidebarButton("🧾  Orders", 200, false);
-            btnCustomers = CreateSidebarButton("👥  Customers", 255, false);
+            btnProducts = CreateSidebarButton("📦  Products", 200, true);
+            btnOrders = CreateSidebarButton("🧾  Orders", 255, false);
+            btnCustomers = CreateSidebarButton("👥  Customers", 310, false);
 
             sidebarPanel.Controls.Add(btnDashboard);
+            sidebarPanel.Controls.Add(btnCategories);
+            sidebarPanel.Controls.Add(btnProducts);
+            sidebarPanel.Controls.Add(btnOrders);
+            sidebarPanel.Controls.Add(btnCustomers);
             btnDashboard.Click += (s, e) =>
             {
                 var dashboardForm = _serviceProvider.GetRequiredService<DashboardForm>();
                 dashboardForm.Show();
                 this.Hide();
             };
-            sidebarPanel.Controls.Add(btnProducts);
-            // btnProducts.Click += btnProducts_click;
-            sidebarPanel.Controls.Add(btnOrders);
-            // btnOrders.Click +=  (s,e)=> NavigateTo<OrderForm>();
-            sidebarPanel.Controls.Add(btnCustomers);
-            // btnCustomers.Click += (s,e)=> NavigateTo<CustomerForm>();
-            sidebarPanel.Controls.Add(btnCategories);
+
             btnCategories.Click += (s, e) =>
             {
-                var categoryForm = _serviceProvider.GetRequiredService<DashboardForm>();
+                var categoryForm = _serviceProvider.GetRequiredService<CategoryForm>();
                 categoryForm.Show();
                 this.Hide();
             };
-
+            
             // Logout Button at bottom
             btnLogout = new Button
             {

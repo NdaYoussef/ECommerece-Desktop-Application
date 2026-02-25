@@ -18,7 +18,7 @@ namespace ECommerece.Infrastructure.Repositories
 
         public IQueryable<Category> GetAll()
         {
-            return _dbcontext.Categories;
+            return _dbcontext.Categories.Include(c => c.Products);
         }
         public async Task<Category> GetById(int id)
         {
@@ -26,7 +26,7 @@ namespace ECommerece.Infrastructure.Repositories
         }
         public async Task<Category> GetByName(string name)
         {
-            return await _dbcontext.Categories.FirstOrDefaultAsync(c => c.Name == name);
+            return await _dbcontext.Categories.IgnoreQueryFilters().FirstOrDefaultAsync(c => c.Name == name);
         }
         public async Task Add(Category category)
         {
