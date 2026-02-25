@@ -1,12 +1,15 @@
 using ECommerece.Application.IRepositories;
+using ECommerece.Application.IServices.ICategoryService;
 using ECommerece.Application.IServices.IUserService;
 using ECommerece.Application.Mappers;
+using ECommerece.Application.Services.CategoryServices;
 using ECommerece.Application.Services.UserServices;
 using ECommerece.Infrastructure.AppDbContext;
+using ECommerece.Infrastructure.AppDbContext;
 using ECommerece.Infrastructure.Repositories;
+using ECommerece.Presentation.Forms.CategoryForms;
 using ECommerece.Presentation.Forms.DashboardForms;
 using ECommerece.Presentation.Forms.UserForms;
-using ECommerece.Infrastructure.AppDbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,10 +41,13 @@ namespace ECommerece.Presentation
                     services.AddTransient<LoginForm>();
                     services.AddTransient<RegisterForm>();
                     services.AddTransient<DashboardForm>();
+                    services.AddTransient<CategoryForm>();
 
                     // Application Layer
                     services.AddScoped<IUserRepository, UserRepository>();
                     services.AddScoped<IAccountService, AccountService>();
+                    services.AddScoped<ICategoryRepository, CategoryRepository>(); 
+                    services.AddScoped<ICategoryServices, CategoryService>();
 
                     // Infrastructure Layer
                     services.AddDbContext<ECommerceDbContext>(options =>
