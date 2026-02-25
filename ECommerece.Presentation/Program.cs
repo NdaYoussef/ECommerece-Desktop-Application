@@ -52,9 +52,7 @@ namespace ECommerece.Presentation
                     services.AddTransient<RegisterForm>();
                     services.AddTransient<DashboardForm>();
                     services.AddTransient<CategoryForm>();
-                    services.AddTransient<CustomerDashboardForm>();
-                    services.AddTransient<AdminOrderManagementForm>();
-                    services.AddTransient<CustomerOrderManagementForm>();
+                    services.AddTransient<CustomerDashboardForm>(); 
 
                     // Application Layer
                     services.AddScoped<IUserRepository, UserRepository>();

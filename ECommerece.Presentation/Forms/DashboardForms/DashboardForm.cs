@@ -1,6 +1,6 @@
 ﻿using ECommerece.Domain.Enums;
 using ECommerece.Presentation.Forms.CategoryForms;
-using ECommerece.Presentation.Forms.OrderForms;
+using ECommerece.Presentation.Forms.UserForms;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Data;
@@ -368,6 +368,8 @@ namespace ECommerece.Presentation.Forms.DashboardForms
 
             if (confirm == DialogResult.Yes)
             {
+                var loginForm = _serviceProvider.GetRequiredService<LoginForm>();
+                loginForm.Show();
                 this.Close();
             }
         }

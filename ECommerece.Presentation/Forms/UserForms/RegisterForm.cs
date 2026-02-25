@@ -27,9 +27,9 @@ namespace ECommerece.Presentation.Forms.UserForms
         private Button btnRegister;
         private Button btnBackToLogin;
         private readonly IAccountService _accountService;
-        private readonly IServiceProvider _serviceProvider; // ✅ ضيف
+        private readonly IServiceProvider _serviceProvider;
 
-        public RegisterForm(IAccountService accountService, IServiceProvider serviceProvider) // ✅ ضيف
+        public RegisterForm(IAccountService accountService, IServiceProvider serviceProvider) 
         {
             _accountService = accountService;
             _serviceProvider = serviceProvider;
