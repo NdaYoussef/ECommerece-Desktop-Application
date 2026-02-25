@@ -1,14 +1,17 @@
 using ECommerece.Application.IRepositories;
 using ECommerece.Application.IServices.ICategoryService;
+using ECommerece.Application.IServices.IOrderService;
 using ECommerece.Application.IServices.IUserService;
 using ECommerece.Application.Mappers;
 using ECommerece.Application.Services.CategoryServices;
+using ECommerece.Application.Services.OrderServices;
 using ECommerece.Application.Services.UserServices;
 using ECommerece.Infrastructure.AppDbContext;
 using ECommerece.Infrastructure.AppDbContext;
 using ECommerece.Infrastructure.Repositories;
 using ECommerece.Presentation.Forms.CategoryForms;
 using ECommerece.Presentation.Forms.DashboardForms;
+using ECommerece.Presentation.Forms.OrderForms;
 using ECommerece.Presentation.Forms.UserForms;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -42,13 +45,16 @@ namespace ECommerece.Presentation
                     services.AddTransient<RegisterForm>();
                     services.AddTransient<DashboardForm>();
                     services.AddTransient<CategoryForm>();
+                    services.AddTransient<AdminOrderManagementForm>();
+                    services.AddTransient<CustomerOrderManagementForm>();
 
                     // Application Layer
                     services.AddScoped<IUserRepository, UserRepository>();
                     services.AddScoped<IAccountService, AccountService>();
                     services.AddScoped<ICategoryRepository, CategoryRepository>(); 
                     services.AddScoped<ICategoryServices, CategoryService>();
-
+                    services.AddScoped<IOrderAdminService, OrderAdminService>();
+                    services.AddScoped<IOrdercustomerService, OrdercustomerService>();
                     // Infrastructure Layer
                     services.AddDbContext<ECommerceDbContext>(options =>
                         options.UseSqlServer(

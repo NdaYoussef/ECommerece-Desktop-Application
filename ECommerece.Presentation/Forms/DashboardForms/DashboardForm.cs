@@ -1,6 +1,9 @@
-﻿using ECommerece.Presentation.Forms.CategoryForms;
+﻿using ECommerece.Domain.Enums;
+using ECommerece.Presentation.Forms.CategoryForms;
+using ECommerece.Presentation.Forms.OrderForms;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -10,12 +13,14 @@ namespace ECommerece.Presentation.Forms.DashboardForms
     public class DashboardForm : Form
     {
         private readonly IServiceProvider _serviceProvider;
+        
 
-        public DashboardForm(IServiceProvider serviceProvider)
+        public DashboardForm(IServiceProvider serviceProvider, UserRoles role)
         {
             _serviceProvider = serviceProvider;
+         
             InitializeComponents();
-            LoadStats();
+         
         }
         // ===== CONTROLS =====
         private Panel sidebarPanel;
@@ -241,6 +246,22 @@ namespace ECommerece.Presentation.Forms.DashboardForms
                 categoryForm.Show();
                 this.Hide();
             };
+            btnOrders.Click += (s, e) =>
+            {
+                if (_role == UserRoles.Admin)
+                {
+                    var form = _serviceProvider.GetRequiredService<AdminOrderManagementForm>();
+                    form.Show();
+                }
+                else
+                {
+                    var form = _serviceProvider.GetRequiredService<CustomerOrderManagementForm>();
+                    form.Show();
+                }
+
+                this.Hide();
+            };
+
         }
 
 
@@ -355,5 +376,7 @@ namespace ECommerece.Presentation.Forms.DashboardForms
                 this.Close();
             }
         }
+
+
     }
 }

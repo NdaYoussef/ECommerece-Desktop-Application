@@ -2,6 +2,7 @@
 using ECommerece.Application.IServices.IOrderService;
 using ECommerece.Domain.Entities;
 using ECommerece.Domain.Enums;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -19,10 +20,11 @@ namespace ECommerece.WinForms.Orders
     ///   - OrderStatus  enum: Pending, Approved, Rejected, Processing, Shipped, Delivered, Cancelled
     ///   - PaymentStatus enum: Pending=1, Completed=2, Failed=3, Refunded=4, Cancelled=5
     /// </summary>
-    public class OrderManagementForm : Form
+    public class AdminOrderManagementForm : Form
     {
         // ── Services ─────────────────────────────────────────────────────────────
         private readonly IOrderAdminService _adminService;
+        private readonly IServiceProvider _serviceProvider;
 
         // ── Sidebar ───────────────────────────────────────────────────────────────
         private Panel pnlSidebar;
@@ -54,9 +56,10 @@ namespace ECommerece.WinForms.Orders
         private OrderDto? _selectedOrder;
 
         // ════════════════════════════════════════════════════════════════════════
-        public OrderManagementForm(IOrderAdminService adminService)
+        public AdminOrderManagementForm(IOrderAdminService adminService, IServiceProvider serviceProvider)
         {
             _adminService = adminService;
+            _serviceProvider = serviceProvider;
             InitializeComponent();
         }
 
@@ -113,6 +116,21 @@ namespace ECommerece.WinForms.Orders
             };
             btnLogout.FlatAppearance.BorderSize = 0;
             btnLogout.Click += (s, e) => this.Close();
+
+            // ── Sidebar Navigation Events ──────────────────────────────────────────
+            btnDashboard.Click += (s, e) =>
+            {
+                var dashboard = _serviceProvider.GetRequiredService<ECommerece.Presentation.Forms.DashboardForms.DashboardForm>();
+                dashboard.Show();
+                this.Hide();
+            };
+
+            btnCategories.Click += (s, e) =>
+            {
+                var categoryForm = _serviceProvider.GetRequiredService<ECommerece.Presentation.Forms.CategoryForms.CategoryForm>();
+                categoryForm.Show();
+                this.Hide();
+            };
 
             pnlSidebar.Controls.Add(navPanel);
             pnlSidebar.Controls.Add(pnlLogo);

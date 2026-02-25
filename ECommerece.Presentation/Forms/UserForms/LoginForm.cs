@@ -29,6 +29,7 @@ namespace ECommerece.Presentation.Forms.UserForms
             _accountService = accountService;
             _serviceProvider = serviceProvider;
             InitializeComponents();
+            
         }
 
         private void InitializeComponents()
