@@ -1,4 +1,5 @@
 ﻿using ECommerece.Application.IServices.IUserService;
+using ECommerece.Presentation.Forms.ProductForms;
 using ECommerece.Presentation.Forms.UserForms;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -93,6 +94,13 @@ namespace ECommerece.Presentation.Forms.DashboardForms
             sidebarPanel.Controls.Add(btnProducts);
             sidebarPanel.Controls.Add(btnCart);
             sidebarPanel.Controls.Add(btnOrders);
+
+            btnProducts.Click += (s, e) =>
+            {
+                var productForm = _serviceProvider.GetRequiredService<CustomerProductsForm>();
+                productForm.Show();
+                this.Hide();
+            };
 
             btnLogout = new Button
             {

@@ -8,6 +8,7 @@ using ECommerece.Application.Services.ProductServices;
 using ECommerece.Infrastructure.Repositories;
 using ECommerece.Presentation.Forms.CategoryForms;
 using ECommerece.Presentation.Forms.DashboardForms;
+using ECommerece.Presentation.Forms.UserForms;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ECommerece.Presentation.Forms.ProductForms
@@ -101,20 +102,22 @@ namespace ECommerece.Presentation.Forms.ProductForms
             sidebarPanel.Controls.Add(btnProducts);
             sidebarPanel.Controls.Add(btnOrders);
             sidebarPanel.Controls.Add(btnCustomers);
+            // btnProducts.Click += btnProducts_click;
+            // btnOrders.Click +=  (s,e)=> NavigateTo<OrderForm>();
+            // btnCustomers.Click += (s,e)=> NavigateTo<CustomerForm>();
             btnDashboard.Click += (s, e) =>
             {
                 var dashboardForm = _serviceProvider.GetRequiredService<DashboardForm>();
                 dashboardForm.Show();
                 this.Hide();
             };
-
             btnCategories.Click += (s, e) =>
             {
                 var categoryForm = _serviceProvider.GetRequiredService<CategoryForm>();
                 categoryForm.Show();
                 this.Hide();
             };
-            
+
             // Logout Button at bottom
             btnLogout = new Button
             {
@@ -390,42 +393,54 @@ namespace ECommerece.Presentation.Forms.ProductForms
 
         private async void DgvProducts_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Ignore header row clicks
-            if (e.RowIndex < 0)
-                return;
+            try
+            {
+                // Ignore header row clicks
+                if (e.RowIndex < 0)
+                    return;
 
-            var row = dgvProducts.Rows[e.RowIndex];
+                var row = dgvProducts.Rows[e.RowIndex];
 
-            // Read the hidden ID
-            int productId = Convert.ToInt32(row.Cells["ProductId"].Value);
+                // Read the hidden ID
+                int productId = Convert.ToInt32(row.Cells["ProductId"].Value);
 
-            // Fetch full details so we can pre-fill all fields (Label, Description, etc.)
-            var details = _productService.GetProductDetails(productId);
-            if (details == null)
+                // Fetch full details so we can pre-fill all fields (Label, Description, etc.)
+                var details = await _productService.GetProductDetails(productId);
+                if (details == null)
+                {
+                    MessageBox.Show(
+                        "Could not load product details.",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
+                    return;
+                }
+
+                using var scope = Program.host.Services.CreateScope();
+                var editForm = new EditProductForm(
+                    scope.ServiceProvider.GetRequiredService<IProductService>(),
+                    productId,
+                    details?.Label ?? "",
+                    details?.Description ?? "",
+                    details?.Price ?? 0,
+                    details?.StockQuantity ?? 0,
+                    details?.ImageUrl ?? "",
+                    details?.CategoryId ?? 0
+                );
+
+                if (editForm.ShowDialog() == DialogResult.OK)
+                    LoadProducts(); // refresh grid after save
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(
-                    "Could not load product details.",
-                    "Error",
+                    $"Error opening edit form:\n{ex.Message}",
+                    "Exception",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                 );
-                return;
             }
-
-            using var scope = Program.host.Services.CreateScope();
-            var editForm = new EditProductForm(
-                scope.ServiceProvider.GetRequiredService<IProductService>(),
-                productId,
-                details?.Label ?? "",
-                details?.Description ?? "",
-                details?.Price ?? 0,
-                details?.StockQuantity ?? 0,
-                details?.ImageUrl ?? "",
-                details?.CategoryId ?? 0
-            );
-
-            if (editForm.ShowDialog() == DialogResult.OK)
-                LoadProducts(); // refresh grid after save
         }
 
         private Button CreateSidebarButton(string text, int y, bool isActive)
@@ -582,18 +597,13 @@ namespace ECommerece.Presentation.Forms.ProductForms
 
         private void BtnLogout_Click(object sender, EventArgs e)
         {
-            var confirm = MessageBox.Show(
-                "Are you sure you want to logout?",
-                "Logout",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
-            );
+            var confirm = MessageBox.Show("Are you sure you want to logout?", "Logout",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (confirm == DialogResult.Yes)
             {
-                // افتح الـ LoginForm وسكر الـ Dashboard
-                // var login = Program.ServiceProvider.GetRequiredService<LoginForm>();
-                // login.Show();
+                var loginForm = _serviceProvider.GetRequiredService<LoginForm>();
+                loginForm.Show();
                 this.Close();
             }
         }

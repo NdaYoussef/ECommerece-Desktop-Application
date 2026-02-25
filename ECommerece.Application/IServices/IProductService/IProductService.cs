@@ -9,8 +9,8 @@ namespace ECommerece.Application.IServices
     public interface IProductService
     {
         public List<ProductListDto>? GetProductsList();
-        public ProductDetailsDto? GetProductDetails(string label);
-        public ProductDetailsDto? GetProductDetails(int id);
+        public Task<ProductDetailsDto?> GetProductDetails(string label);
+        public Task<ProductDetailsDto?> GetProductDetails(int id);
         public List<ProductListDto>? GetProductsByCategory(int CategoryId);
         public List<ProductListDto>? GetProductsByCategory(string CategoryName);
         public List<ProductListDto>? SearchProducts(string keyword);
