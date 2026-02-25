@@ -14,12 +14,13 @@ namespace ECommerece.Application.Services.ProductServices
     {
         readonly IProductRepository Repository = repository;
 
-        public bool AddProduct(ProductCreateDto productDto)
+        public async Task<bool> AddProduct(ProductCreateDto productDto)
         {
             try
             {
                 var product = productDto.Adapt<Product>();
-                Repository.Add(product);
+                await Repository.Add(product);
+                await Repository.SaveChangesAsync(); // ← this is what was missing
                 return true;
             }
             catch
@@ -28,12 +29,12 @@ namespace ECommerece.Application.Services.ProductServices
             }
         }
 
-        public bool DeleteProduct(int id)
+        public async Task<bool> DeleteProduct(int id)
         {
             var product = Repository.GetById(id);
             if (product.Result != null)
             {
-                Repository.SoftDelete(product.Result);
+                await Repository.Delete(product.Result);
                 return true;
             }
             return false;
@@ -93,21 +94,22 @@ namespace ECommerece.Application.Services.ProductServices
                 .ToList();
         }
 
-        public bool UpdateProduct(int id, ProductCreateDto productDto)
+        public async Task<bool> UpdateProduct(int id, ProductCreateDto productDto)
         {
-            try
-            {
-                var existing = Repository.GetById(id);
+            // try
+            // {
+                var existing = await Repository.GetById(id);
                 if (existing is null)
                     return false;
                 productDto.Adapt(existing);
-                Repository.Update(existing.Result);
+                await Repository.Update(existing);
+                await Repository.SaveChangesAsync();
                 return true;
-            }
-            catch
-            {
-                return false;
-            }
+            // }
+            // catch
+            // {
+            //     return false;
+            // }
         }
     }
 }

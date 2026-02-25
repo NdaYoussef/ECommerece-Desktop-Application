@@ -12,7 +12,7 @@ namespace ECommerece.Application.IRepositories
 
         // TODO if label isn't unique either return list or delete the function
 
-        public Task SoftDelete(Product entity);
+        public Task<bool> SoftDelete(int id);
 
         // TODO should it be in IGenericRepository<>
     }
