@@ -52,7 +52,9 @@ namespace ECommerece.Presentation
                     services.AddTransient<RegisterForm>();
                     services.AddTransient<DashboardForm>();
                     services.AddTransient<CategoryForm>();
-                    services.AddTransient<CustomerDashboardForm>(); // ✅ ضيف
+                    services.AddTransient<CustomerDashboardForm>();
+                    services.AddTransient<AdminOrderManagementForm>();
+                    services.AddTransient<CustomerOrderManagementForm>();
 
                     // Application Layer
                     services.AddScoped<IUserRepository, UserRepository>();
@@ -61,6 +63,8 @@ namespace ECommerece.Presentation
                     services.AddScoped<ICategoryServices, CategoryService>();
                     services.AddScoped<IOrderAdminService, OrderAdminService>();
                     services.AddScoped<IOrdercustomerService, OrdercustomerService>();
+                    services.AddScoped<IOrderRepository, OrderRepository>();
+                    
                     // Infrastructure Layer
                     services.AddDbContext<ECommerceDbContext>(options =>
                         options.UseSqlServer(

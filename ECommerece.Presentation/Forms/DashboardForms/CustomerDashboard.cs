@@ -1,4 +1,5 @@
 ﻿using ECommerece.Application.IServices.IUserService;
+using ECommerece.Presentation.Forms.OrderForms;
 using ECommerece.Presentation.Forms.UserForms;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -189,6 +190,13 @@ namespace ECommerece.Presentation.Forms.DashboardForms
             mainPanel.Controls.Add(CreateActionCard("Browse Products", "Explore our wide selection of products", "Start Shopping →", Color.FromArgb(59, 91, 219), 30, 345));
             mainPanel.Controls.Add(CreateActionCard("My Cart", "Review items in your shopping cart", "View Cart →", Color.FromArgb(16, 185, 129), 430, 345));
             mainPanel.Controls.Add(CreateActionCard("My Orders", "Track your order history and status", "View Orders →", Color.FromArgb(239, 68, 68), 630, 345));
+
+            btnOrders.Click += (s, e) =>
+            {
+                var form = _serviceProvider.GetRequiredService<CustomerOrderManagementForm>();
+                form.Show();
+                this.Hide();
+            };
         }
 
         private Button CreateSidebarButton(string text, int y, bool isActive)

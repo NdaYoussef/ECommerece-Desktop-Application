@@ -15,7 +15,7 @@ namespace ECommerece.Presentation.Forms.DashboardForms
         private readonly IServiceProvider _serviceProvider;
         
 
-        public DashboardForm(IServiceProvider serviceProvider, UserRoles role)
+        public DashboardForm(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
          
@@ -248,18 +248,13 @@ namespace ECommerece.Presentation.Forms.DashboardForms
             };
             btnOrders.Click += (s, e) =>
             {
-                if (_role == UserRoles.Admin)
-                {
+            
                     var form = _serviceProvider.GetRequiredService<AdminOrderManagementForm>();
                     form.Show();
-                }
-                else
-                {
-                    var form = _serviceProvider.GetRequiredService<CustomerOrderManagementForm>();
-                    form.Show();
-                }
-
                 this.Hide();
+
+                
+                   
             };
 
         }
