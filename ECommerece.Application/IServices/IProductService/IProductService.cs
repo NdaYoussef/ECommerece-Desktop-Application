@@ -17,6 +17,6 @@ namespace ECommerece.Application.IServices
         public Task<bool> AddProduct(ProductCreateDto productDto);
         public Task<bool> UpdateProduct(int id, ProductCreateDto productDto);
         public Task<bool> DeleteProduct(int id);
-        List<ProductDetailsDto>? GetLowStockProducts(int threshold = 5);
+        public List<ProductDetailsDto>? GetLowStockProducts(int threshold = 5);
     }
 }

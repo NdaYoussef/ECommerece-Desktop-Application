@@ -86,7 +86,7 @@ namespace ECommerece.Presentation.Forms.DashboardForms
 
             sidebarPanel.Controls.Add(btnDashboard);
             sidebarPanel.Controls.Add(btnProducts);
-            btnProducts.Click += (s, e) => NavigateTo<ProductsForm>();
+            btnProducts.Click += (s, e) => NavigateTo<AdminProductsForm>();
             sidebarPanel.Controls.Add(btnOrders);
             sidebarPanel.Controls.Add(btnCustomers);
 

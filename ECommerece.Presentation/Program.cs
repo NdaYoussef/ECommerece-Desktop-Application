@@ -47,9 +47,11 @@ namespace ECommerece.Presentation
                         // Presentation
                         services.AddTransient<LoginForm>();
                         services.AddTransient<RegisterForm>();
-                        services.AddTransient<DashboardForm>(); 
-                        services.AddTransient<ProductsForm>();
+                        services.AddTransient<DashboardForm>();
+                        services.AddTransient<AdminProductsForm>();
                         services.AddTransient<AddProductForm>();
+                        services.AddTransient<CustomerProductsForm>();
+                        services.AddTransient<EditProductForm>();
 
                         // Application Layer
                         services.AddScoped<IUserRepository, UserRepository>();

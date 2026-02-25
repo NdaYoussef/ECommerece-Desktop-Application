@@ -31,10 +31,11 @@ namespace ECommerece.Application.Services.ProductServices
 
         public async Task<bool> DeleteProduct(int id)
         {
-            var product = Repository.GetById(id);
-            if (product.Result != null)
+            var product = await Repository.GetById(id);
+            if (product != null)
             {
-                await Repository.Delete(product.Result);
+                Repository.Delete(product);
+                await Repository.SaveChangesAsync();
                 return true;
             }
             return false;
@@ -98,13 +99,13 @@ namespace ECommerece.Application.Services.ProductServices
         {
             // try
             // {
-                var existing = await Repository.GetById(id);
-                if (existing is null)
-                    return false;
-                productDto.Adapt(existing);
-                await Repository.Update(existing);
-                await Repository.SaveChangesAsync();
-                return true;
+            var existing = await Repository.GetById(id);
+            if (existing is null)
+                return false;
+            productDto.Adapt(existing);
+            await Repository.Update(existing);
+            await Repository.SaveChangesAsync();
+            return true;
             // }
             // catch
             // {

@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ECommerece.Presentation.Forms.ProductForms
 {
-    public class ProductsForm : Form
+    public class AdminProductsForm : Form
     {
         // private readonly IProductRepository _productRepository = new ProductRepository();
         private readonly IProductService _productService;
@@ -38,7 +38,7 @@ namespace ECommerece.Presentation.Forms.ProductForms
             cardOutOfStock;
         private DataGridView dgvProducts;
 
-        public ProductsForm(IProductService productService)
+        public AdminProductsForm(IProductService productService)
         {
             _productService = productService;
             InitializeComponents();
@@ -279,37 +279,138 @@ namespace ECommerece.Presentation.Forms.ProductForms
             dgvProducts.DefaultCellStyle.SelectionBackColor = Color.FromArgb(239, 246, 255);
             dgvProducts.DefaultCellStyle.SelectionForeColor = Color.FromArgb(15, 23, 42);
 
+            dgvProducts.Columns.Add("ProductId", "ProductId");
+            dgvProducts.Columns["ProductId"].Visible = false;
+
             dgvProducts.Columns.Add("Label", "ProductName");
             // dgv.Columns.Add("Description", "Description");
             dgvProducts.Columns.Add("Price", "Price");
             dgvProducts.Columns.Add("CategoryName", "Category");
             dgvProducts.Columns.Add("IsInStock", "In Stock");
 
-            foreach (var item in _productService.GetProductsList() ?? [])
+            dgvProducts.CellDoubleClick += DgvProducts_CellDoubleClick;
+
+            // 🔴 NEW: Add a button column for deleting products
+            DataGridViewButtonColumn deleteButton = new DataGridViewButtonColumn
             {
-                dgvProducts.Rows.Add(item.Label, item.Price, item.CategoryName, item.IsInStock);
-            }
+                Name = "RemoveColumn",
+                HeaderText = "",
+                Text = "🗑️ Delete",
+                UseColumnTextForButtonValue = true,
+                FlatStyle = FlatStyle.Flat,
+                Width = 80, // fixed width
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
+            };
+            dgvProducts.Columns.Add(deleteButton);
+
+            dgvProducts.CellClick += DgvProducts_CellClick;
+
+            // foreach (var p in _productService.GetProductsList() ?? [])
+            // {
+            //     dgvProducts.Rows.Add(p.Id,p.Label, p.Price, p.CategoryName, p.IsInStock);
+            // }
             mainPanel.Controls.Add(dgvProducts);
+        }
+
+        private async void DgvProducts_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Ignore header clicks or clicks on non-button columns
+            if (e.RowIndex < 0 || dgvProducts.Columns[e.ColumnIndex].Name != "RemoveColumn")
+                return;
+
+            var row = dgvProducts.Rows[e.RowIndex];
+            int productId = Convert.ToInt32(row.Cells["ProductId"].Value);
+            string productName = row.Cells["Label"].Value?.ToString() ?? "this product";
+
+            var confirm = MessageBox.Show(
+                $"Are you sure you want to delete '{productName}'?",
+                "Confirm Delete",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
+
+            if (confirm == DialogResult.Yes)
+            {
+                try
+                {
+                    // Assuming IProductService has a DeleteProduct method
+                    await _productService.DeleteProduct(productId);
+                    LoadProducts(); // refresh grid
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        $"Error deleting product: {ex.Message}",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
+                }
+            }
         }
 
         private void NavigateTo<T>()
             where T : Form
         {
-            var form = Program.host.Services.GetRequiredService<T>();
-            form.Show();
-            this.Close();
+            using (var scope = Program.host.Services.CreateScope())
+            {
+                var form = scope.ServiceProvider.GetRequiredService<T>();
+                form.Show();
+                this.Close(); // or Hide() – be careful with closing the current form
+            }
             // form.FormClosed += (s, e) => this.Show();
         }
 
         private void BtnAdd_Click(object sender, EventArgs e)
         {
-            using (var addForm = Program.host.Services.GetRequiredService<AddProductForm>())
+            using (var scope = Program.host.Services.CreateScope())
             {
+                var addForm = scope.ServiceProvider.GetRequiredService<AddProductForm>();
                 if (addForm.ShowDialog() == DialogResult.OK)
                 {
                     LoadProducts(); // refresh grid
                 }
             }
+        }
+
+        private async void DgvProducts_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Ignore header row clicks
+            if (e.RowIndex < 0)
+                return;
+
+            var row = dgvProducts.Rows[e.RowIndex];
+
+            // Read the hidden ID
+            int productId = Convert.ToInt32(row.Cells["ProductId"].Value);
+
+            // Fetch full details so we can pre-fill all fields (Label, Description, etc.)
+            var details = _productService.GetProductDetails(productId);
+            if (details == null)
+            {
+                MessageBox.Show(
+                    "Could not load product details.",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+                return;
+            }
+
+            using var scope = Program.host.Services.CreateScope();
+            var editForm = new EditProductForm(
+                scope.ServiceProvider.GetRequiredService<IProductService>(),
+                productId,
+                details?.Label ?? "",
+                details?.Description ?? "",
+                details?.Price ?? 0,
+                details?.StockQuantity ?? 0,
+                details?.ImageUrl ?? "",
+                details?.CategoryId ?? 0
+            );
+
+            if (editForm.ShowDialog() == DialogResult.OK)
+                LoadProducts(); // refresh grid after save
         }
 
         private Button CreateSidebarButton(string text, int y, bool isActive)
@@ -404,7 +505,7 @@ namespace ECommerece.Presentation.Forms.ProductForms
             dgvProducts.Rows.Clear();
 
             var products = _productService.GetProductsList();
-            if (products == null || products.Count == 0)
+            if (products == null || products?.Count == 0)
             {
                 UpdateCardValue(cardTotalProducts, "0");
                 UpdateCardValue(cardInStock, "0");
@@ -423,7 +524,7 @@ namespace ECommerece.Presentation.Forms.ProductForms
                 lowStock = 0,
                 outOfStock = 0;
 
-            foreach (var p in products)
+            foreach (var p in products ?? [])
             {
                 string status;
                 if (!p.IsInStock)
@@ -443,10 +544,10 @@ namespace ECommerece.Presentation.Forms.ProductForms
                     inStock++;
                 }
 
-                dgvProducts.Rows.Add(p.Label, p.Price.ToString("C"), p.CategoryName, status);
+                dgvProducts.Rows.Add(p.Id, p.Label, p.Price.ToString("C"), p.CategoryName, status);
             }
 
-            UpdateCardValue(cardTotalProducts, products.Count.ToString());
+            UpdateCardValue(cardTotalProducts, products?.Count.ToString());
             UpdateCardValue(cardInStock, inStock.ToString());
             UpdateCardValue(cardLowStock, lowStock.ToString());
             UpdateCardValue(cardOutOfStock, outOfStock.ToString());

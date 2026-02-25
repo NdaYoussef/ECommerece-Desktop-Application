@@ -6,11 +6,11 @@ using ECommerece.Application.IServices;
 
 namespace ECommerece.Presentation.Forms.ProductForms
 {
-    public class AddProductForm : Form
+    public class EditProductForm : Form
     {
         private readonly IProductService _productService;
+        private readonly int _productId;
 
-        // Controls
         private TextBox txtLabel,
             txtDescription,
             txtPrice,
@@ -19,19 +19,37 @@ namespace ECommerece.Presentation.Forms.ProductForms
             txtCategoryId;
         private Button btnSave,
             btnCancel;
-        private Label lblTitle;
 
-        public AddProductForm(IProductService productService)
+        // Pass the product's ID and its current values in from the grid
+        public EditProductForm(
+            IProductService productService,
+            int productId,
+            string label,
+            string description,
+            decimal price,
+            int stockQuantity,
+            string imageUrl,
+            int categoryId
+        )
         {
             _productService = productService;
+            _productId = productId;
+
             InitializeComponents();
+
+            // Pre-fill all fields
+            txtLabel.Text = label;
+            txtDescription.Text = description;
+            txtPrice.Text = price.ToString();
+            txtStockQuantity.Text = stockQuantity.ToString();
+            txtImageUrl.Text = imageUrl;
+            txtCategoryId.Text = categoryId.ToString();
         }
 
         private void InitializeComponents()
         {
-            // Form settings
-            this.Text = "Add New Product";
-            this.Size = new Size(500, 450);
+            this.Text = "Edit Product";
+            this.Size = new Size(500, 420);
             this.StartPosition = FormStartPosition.CenterParent;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -39,95 +57,29 @@ namespace ECommerece.Presentation.Forms.ProductForms
             this.BackColor = Color.FromArgb(241, 245, 249);
             this.Font = new Font("Segoe UI", 9f);
 
-            // Title
-            lblTitle = new Label
-            {
-                Text = "➕ Add New Product",
-                Font = new Font("Segoe UI", 14f, FontStyle.Bold),
-                ForeColor = Color.FromArgb(15, 23, 42),
-                Location = new Point(20, 20),
-                AutoSize = true,
-            };
-            this.Controls.Add(lblTitle);
+            this.Controls.Add(
+                new Label
+                {
+                    Text = "✏️ Edit Product",
+                    Font = new Font("Segoe UI", 14f, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(15, 23, 42),
+                    Location = new Point(20, 20),
+                    AutoSize = true,
+                }
+            );
 
-            // Label
-            Label lblLabel = new()
-            {
-                Text = "Product Name:",
-                Location = new Point(20, 70),
-                AutoSize = true,
-            };
-            txtLabel = new TextBox { Location = new Point(150, 67), Width = 300 };
-            this.Controls.Add(lblLabel);
-            this.Controls.Add(txtLabel);
+            txtLabel = AddField("Product Name:", 70);
+            txtDescription = AddField("Description:", 110, multiline: true);
+            txtPrice = AddField("Price:", 185);
+            txtStockQuantity = AddField("Stock Quantity:", 220);
+            txtImageUrl = AddField("Image URL:", 255);
+            txtCategoryId = AddField("Category ID:", 290);
 
-            // Description
-            Label lblDescription = new()
-            {
-                Text = "Description:",
-                Location = new Point(20, 110),
-                AutoSize = true,
-            };
-            txtDescription = new TextBox
-            {
-                Location = new Point(150, 107),
-                Width = 300,
-                Multiline = true,
-                Height = 60,
-            };
-            this.Controls.Add(lblDescription);
-            this.Controls.Add(txtDescription);
-
-            // Price
-            Label lblPrice = new()
-            {
-                Text = "Price:",
-                Location = new Point(20, 185),
-                AutoSize = true,
-            };
-            txtPrice = new TextBox { Location = new Point(150, 182), Width = 300 };
-            this.Controls.Add(lblPrice);
-            this.Controls.Add(txtPrice);
-
-            // Stock Quantity
-            Label lblStock = new()
-            {
-                Text = "Stock Quantity:",
-                Location = new Point(20, 220),
-                AutoSize = true,
-            };
-            txtStockQuantity = new TextBox { Location = new Point(150, 217), Width = 300 };
-            this.Controls.Add(lblStock);
-            this.Controls.Add(txtStockQuantity);
-
-            // Image URL
-            Label lblImage = new()
-            {
-                Text = "Image URL:",
-                Location = new Point(20, 255),
-                AutoSize = true,
-            };
-            txtImageUrl = new TextBox { Location = new Point(150, 252), Width = 300 };
-            this.Controls.Add(lblImage);
-            this.Controls.Add(txtImageUrl);
-
-            // Category ID
-            Label lblCategory = new()
-            {
-                Text = "Category ID:",
-                Location = new Point(20, 290),
-                AutoSize = true,
-            };
-            txtCategoryId = new TextBox { Location = new Point(150, 287), Width = 300 };
-            this.Controls.Add(lblCategory);
-            this.Controls.Add(txtCategoryId);
-
-            // Buttons
             btnSave = new Button
             {
-                Text = "Save",
-                Location = new Point(270, 340),
-                Size = new Size(80, 30),
+                Text = "Save Changes",
+                Location = new Point(245, 345),
+                Size = new Size(110, 34),
                 BackColor = Color.FromArgb(59, 91, 219),
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
@@ -139,8 +91,8 @@ namespace ECommerece.Presentation.Forms.ProductForms
             btnCancel = new Button
             {
                 Text = "Cancel",
-                Location = new Point(370, 340),
-                Size = new Size(80, 30),
+                Location = new Point(365, 345),
+                Size = new Size(90, 34),
                 BackColor = Color.FromArgb(100, 116, 139),
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
@@ -151,15 +103,34 @@ namespace ECommerece.Presentation.Forms.ProductForms
 
             this.Controls.Add(btnSave);
             this.Controls.Add(btnCancel);
-
-            // Accept/Cancel buttons
             this.AcceptButton = btnSave;
             this.CancelButton = btnCancel;
         }
 
+        private TextBox AddField(string labelText, int y, bool multiline = false)
+        {
+            this.Controls.Add(
+                new Label
+                {
+                    Text = labelText,
+                    Location = new Point(20, y + 3),
+                    AutoSize = true,
+                }
+            );
+            var txt = new TextBox
+            {
+                Location = new Point(150, y),
+                Width = 300,
+                Multiline = multiline,
+                Height = multiline ? 60 : 23,
+            };
+            this.Controls.Add(txt);
+            return txt;
+        }
+
         private async void BtnSave_Click(object sender, EventArgs e)
         {
-            // Validate inputs
+            // ── Validation ────────────────────────────────────────
             if (string.IsNullOrWhiteSpace(txtLabel.Text))
             {
                 MessageBox.Show(
@@ -170,7 +141,6 @@ namespace ECommerece.Presentation.Forms.ProductForms
                 );
                 return;
             }
-
             if (!decimal.TryParse(txtPrice.Text, out decimal price) || price <= 0)
             {
                 MessageBox.Show(
@@ -181,7 +151,6 @@ namespace ECommerece.Presentation.Forms.ProductForms
                 );
                 return;
             }
-
             if (!int.TryParse(txtStockQuantity.Text, out int stock) || stock < 0)
             {
                 MessageBox.Show(
@@ -192,20 +161,20 @@ namespace ECommerece.Presentation.Forms.ProductForms
                 );
                 return;
             }
-
             if (!int.TryParse(txtCategoryId.Text, out int categoryId) || categoryId <= 0)
             {
                 MessageBox.Show(
-                    "Please enter a valid Category ID (positive integer).",
+                    "Please enter a valid Category ID.",
                     "Validation Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
                 );
                 return;
             }
+
             btnSave.Enabled = false;
             btnSave.Text = "Saving...";
-            // Create DTO
+
             var dto = new ProductCreateDto
             {
                 Label = txtLabel.Text.Trim(),
@@ -220,13 +189,12 @@ namespace ECommerece.Presentation.Forms.ProductForms
                 CategoryId = categoryId,
             };
 
-            // try
-            // {
-            bool success = await _productService.AddProduct(dto);
+            bool success = await _productService.UpdateProduct(_productId, dto);
+
             if (success)
             {
                 MessageBox.Show(
-                    "Product added successfully!",
+                    "Product updated successfully!",
                     "Success",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information
@@ -237,27 +205,14 @@ namespace ECommerece.Presentation.Forms.ProductForms
             else
             {
                 MessageBox.Show(
-                    $"Error adding product",
+                    "Failed to update product. Check that the Category ID exists.",
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                 );
-                this.Refresh();
                 btnSave.Enabled = true;
-                btnSave.Text = "Save";
+                btnSave.Text = "Save Changes";
             }
-            // }
-            // catch (Exception ex)
-            // {
-            //     MessageBox.Show(
-            //         $"Error adding product: {ex.Message}",
-            //         "Error",
-            //         MessageBoxButtons.OK,
-            //         MessageBoxIcon.Error
-            //     );
-            //     btnSave.Enabled = true;
-            //     btnSave.Text = "Save";
-            // }
         }
     }
 }
