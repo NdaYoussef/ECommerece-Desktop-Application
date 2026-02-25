@@ -9,5 +9,6 @@ namespace ECommerece.Application.IRepositories
     {
       
        Task ClearCart(int cartId);
+
     }
 }
