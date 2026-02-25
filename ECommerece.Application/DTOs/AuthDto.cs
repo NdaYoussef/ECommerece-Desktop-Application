@@ -9,5 +9,7 @@ namespace ECommerece.Application.DTOs
         public string? Message { get; set; }
         public bool IsAuthenticated { get; set; } = false;
         public object? Data { get; set; }
+        public string Role { get; set; }
+        public string Name { get; set; }
     }
 }
