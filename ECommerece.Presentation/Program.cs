@@ -7,8 +7,8 @@ using ECommerece.Application.Services.CategoryServices;
 using ECommerece.Application.Services.OrderServices;
 using ECommerece.Application.Services.UserServices;
 using ECommerece.Infrastructure.AppDbContext;
-using ECommerece.Infrastructure.AppDbContext;
 using ECommerece.Infrastructure.Repositories;
+using ECommerece.Infrastructure.Seed;
 using ECommerece.Presentation.Forms.CategoryForms;
 using ECommerece.Presentation.Forms.DashboardForms;
 using ECommerece.Presentation.Forms.OrderForms;
@@ -28,6 +28,13 @@ namespace ECommerece.Presentation
             var host = CreateHostBuilder().Build();
             Mapping.RegisterAllMapping();
             ApplicationConfiguration.Initialize();
+
+            using (var scope = host.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<ECommerceDbContext>();
+                DataSeeder.SeedAdminAsync(db).Wait();
+            }
+
             System.Windows.Forms.Application.Run(host.Services.GetRequiredService<LoginForm>());
         }
 
@@ -45,13 +52,12 @@ namespace ECommerece.Presentation
                     services.AddTransient<RegisterForm>();
                     services.AddTransient<DashboardForm>();
                     services.AddTransient<CategoryForm>();
-                    services.AddTransient<AdminOrderManagementForm>();
-                    services.AddTransient<CustomerOrderManagementForm>();
+                    services.AddTransient<CustomerDashboardForm>(); // ✅ ضيف
 
                     // Application Layer
                     services.AddScoped<IUserRepository, UserRepository>();
                     services.AddScoped<IAccountService, AccountService>();
-                    services.AddScoped<ICategoryRepository, CategoryRepository>(); 
+                    services.AddScoped<ICategoryRepository, CategoryRepository>();
                     services.AddScoped<ICategoryServices, CategoryService>();
                     services.AddScoped<IOrderAdminService, OrderAdminService>();
                     services.AddScoped<IOrdercustomerService, OrdercustomerService>();
@@ -62,28 +68,6 @@ namespace ECommerece.Presentation
                             sqlOptions => sqlOptions.EnableRetryOnFailure()
                         ));
                 });
-
         }
-
-        //    static IHostBuilder CreateHostBuilder()
-        //    {
-        //        return Host.CreateDefaultBuilder()
-        //            .ConfigureServices((context, services) =>
-        //            {
-        //                // Presentation
-        //                services.AddTransient<Form1>();
-
-        //                // Application Layer Services
-        //                // services.AddScoped<IProductService, ProductService>();
-
-        //                // Infrastructure Layer
-        //                services.AddDbContext<ECommerceDbContext>(options =>
-        //                            options.UseSqlServer(
-        //                                context.Configuration.GetConnectionString("DefaultConnection"),
-        //                                sqlOptions => sqlOptions.EnableRetryOnFailure()
-        //                            ));
-        //            });
-        //            }
-        //}
     }
 }

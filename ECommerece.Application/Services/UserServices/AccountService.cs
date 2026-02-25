@@ -43,11 +43,14 @@ namespace ECommerece.Application.Services.UserServices
                     Message = "Invalid email or password"
                 };
 
-            return new AuthDto
-            {
-                IsAuthenticated = true,
-                Message = "Login successful"
-            };
+          
+                return new AuthDto
+                {
+                    IsAuthenticated = true,
+                    Message = "Login successful",
+                    Role = user.Role.ToString() 
+                };
+        
         }
 
         public async Task<AuthDto> LogoutAsync()

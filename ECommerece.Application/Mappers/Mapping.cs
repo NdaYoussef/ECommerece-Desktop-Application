@@ -1,4 +1,3 @@
-﻿
 ﻿using ECommerece.Application.DTOs.OrderDtos;
 
 ﻿using ECommerece.Application.DTOs.CategoryDto;
@@ -19,6 +18,13 @@ namespace ECommerece.Application.Mappers
         {
             TypeAdapterConfig<User, RegisterDto>.NewConfig();
             TypeAdapterConfig<User, LoginDto>.NewConfig();
+            TypeAdapterConfig<Order, OrderDto>.NewConfig().TwoWays()
+                .Map(dest => dest.Items, src => src.OrderItems) ;
+            TypeAdapterConfig<CreateOrderDto,Order>.NewConfig();
+            TypeAdapterConfig<UpdateOrderDto, Order>.NewConfig();
+            TypeAdapterConfig< OrderItem, OrderItemDto>.NewConfig().TwoWays();
+            TypeAdapterConfig<CreateOrderItemDto, OrderItem>.NewConfig();
+
 
             TypeAdapterConfig<Order, OrderDto>.NewConfig().TwoWays()
                 .Map(dest => dest.Items, src => src.OrderItems) ;
