@@ -17,6 +17,7 @@ namespace ECommerece.Infrastructure.Configurations
             builder.Property(c => c.CreatedAt).IsRequired();
             
             builder.Property(c => c.UpdatedAt).IsRequired();
+            builder.HasQueryFilter(c => !c.IsDeleted);
 
             //cart - cartItems
             builder.HasMany(c => c.CartItems)

@@ -1,10 +1,20 @@
 using ECommerece.Application.IRepositories;
+using ECommerece.Application.IServices.ICategoryService;
+using ECommerece.Application.IServices.IUserService;
+using ECommerece.Application.IRepositories;
 using ECommerece.Application.IServices;
 using ECommerece.Application.IServices.IUserService;
 using ECommerece.Application.Mappers;
+using ECommerece.Application.Services.CategoryServices;
+using ECommerece.Application.Services.UserServices;
 using ECommerece.Application.Services.ProductServices;
 using ECommerece.Application.Services.UserServices;
 using ECommerece.Infrastructure.AppDbContext;
+using ECommerece.Infrastructure.Repositories;
+using ECommerece.Infrastructure.Seed;
+using ECommerece.Presentation.Forms.CategoryForms;
+using ECommerece.Presentation.Forms.DashboardForms;
+using ECommerece.Presentation.Forms.UserForms;
 using ECommerece.Infrastructure.Repositories;
 using ECommerece.Presentation.Forms.DashboardForms;
 using ECommerece.Presentation.Forms.ProductForms;
@@ -23,14 +33,41 @@ namespace ECommerece.Presentation
         [STAThread]
         static void Main()
         {
+            var host = CreateHostBuilder().Build();
             Mapping.RegisterAllMapping();
             ApplicationConfiguration.Initialize();
+
+            using (var scope = host.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<ECommerceDbContext>();
+                DataSeeder.SeedAdminAsync(db).Wait();
+            }
+
+            System.Windows.Forms.Application.Run(host.Services.GetRequiredService<LoginForm>());
             System.Windows.Forms.Application.Run(host.Services.GetRequiredService<LoginForm>());
         }
 
         static IHostBuilder CreateHostBuilder()
         {
             return Host.CreateDefaultBuilder()
+                .ConfigureAppConfiguration((context, config) =>
+                {
+                    config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                })
+                .ConfigureServices((context, services) =>
+                {
+                    // Presentation
+                    services.AddTransient<LoginForm>();
+                    services.AddTransient<RegisterForm>();
+                    services.AddTransient<DashboardForm>();
+                    services.AddTransient<CategoryForm>();
+                    services.AddTransient<CustomerDashboardForm>(); 
+
+                    // Application Layer
+                    services.AddScoped<IUserRepository, UserRepository>();
+                    services.AddScoped<IAccountService, AccountService>();
+                    services.AddScoped<ICategoryRepository, CategoryRepository>();
+                    services.AddScoped<ICategoryServices, CategoryService>();
                 .ConfigureAppConfiguration(
                     (context, config) =>
                     {
@@ -59,6 +96,16 @@ namespace ECommerece.Presentation
                         services.AddScoped<IProductRepository, ProductRepository>();
                         services.AddScoped<IProductService, ProductService>();
 
+                    // Infrastructure Layer
+                    services.AddDbContext<ECommerceDbContext>(options =>
+                        options.UseSqlServer(
+                            context.Configuration.GetConnectionString("DefaultConnection"),
+                            sqlOptions => sqlOptions.EnableRetryOnFailure()
+                        ));
+                });
+        }
+    }
+}
                         // Infrastructure Layer
                         services.AddDbContext<ECommerceDbContext>(options =>
                             options.UseSqlServer(

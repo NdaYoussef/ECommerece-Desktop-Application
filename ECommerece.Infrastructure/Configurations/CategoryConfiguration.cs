@@ -15,7 +15,7 @@ namespace ECommerece.Infrastructure.Configurations
             builder.HasIndex(c => c.Name).IsUnique();
 
             builder.Property(c => c.Description).IsRequired(false).HasMaxLength(200);
-           
+            builder.HasQueryFilter(c => !c.IsDeleted);
         }
     }
 }

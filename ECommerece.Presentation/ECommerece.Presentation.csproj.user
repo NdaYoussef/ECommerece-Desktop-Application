@@ -4,6 +4,15 @@
     <Compile Update="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\CategoryForms\AddEditCategoryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\CategoryForms\CategoryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\DashboardForms\CustomerDashboard.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\DashboardForms\DashboardForm.cs">
       <SubType>Form</SubType>
     </Compile>

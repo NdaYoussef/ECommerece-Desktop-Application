@@ -1,10 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using ECommerece.Application.DTOs.ProductDto;
 using ECommerece.Application.DTOs.UserDto;
 using ECommerece.Domain.Entities;
 using Mapster;
+using System;
+using System.Collections.Generic;
+using System.Net.Sockets;
+using System.Text;
+using ECommerece.Application.DTOs.OrderDtos;
 
 namespace ECommerece.Application.Mappers
 {
@@ -14,8 +19,15 @@ namespace ECommerece.Application.Mappers
         {
             TypeAdapterConfig<User, RegisterDto>.NewConfig();
             TypeAdapterConfig<User, LoginDto>.NewConfig();
+            TypeAdapterConfig<Order, OrderDto>.NewConfig().TwoWays()
+                .Map(dest => dest.Items, src => src.OrderItems) ;
+            TypeAdapterConfig<CreateOrderDto,Order>.NewConfig();
+            TypeAdapterConfig<UpdateOrderDto, Order>.NewConfig();
+            TypeAdapterConfig< OrderItem, OrderItemDto>.NewConfig().TwoWays();
+            TypeAdapterConfig<CreateOrderItemDto, OrderItem>.NewConfig();
 
-            /*
+
+/*
             Start product mapping
             */
             TypeAdapterConfig<Product, ProductListDto>
@@ -35,6 +47,10 @@ namespace ECommerece.Application.Mappers
             /*
             End product mapping
             */
+
+            TypeAdapterConfig<Category, GetCategoryDto>.NewConfig()
+                .Map(dest => dest.ProductCount, src => src.Products != null ? src.Products.Count : 0);
         }
+
     }
 }

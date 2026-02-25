@@ -1,6 +1,7 @@
 ﻿using ECommerece.Application.DTOs.UserDto;
 using ECommerece.Application.IServices.IUserService;
 using ECommerece.Domain.Enums;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -18,46 +19,41 @@ namespace ECommerece.Presentation.Forms.UserForms
         private Label lblName;
         private Label lblEmail;
         private Label lblPassword;
-        private Label lblRole;
 
         private TextBox txtName;
         private TextBox txtEmail;
         private TextBox txtPassword;
-        private ComboBox cmbRole;
 
         private Button btnRegister;
         private Button btnBackToLogin;
-
         private readonly IAccountService _accountService;
+        private readonly IServiceProvider _serviceProvider;
 
-        public RegisterForm(IAccountService accountService)
+        public RegisterForm(IAccountService accountService, IServiceProvider serviceProvider) 
         {
             _accountService = accountService;
+            _serviceProvider = serviceProvider;
             InitializeComponents();
         }
-
         private void InitializeComponents()
         {
-            // ===== FORM =====
             this.Text = "E-Commerce - Register";
-            this.Size = new Size(960, 680);
+            this.Size = new Size(960, 620);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.BackColor = Color.FromArgb(241, 245, 249);
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Font = new Font("Segoe UI", 9f);
 
-            // ===== CARD PANEL =====
             cardPanel = new Panel
             {
-                Size = new Size(560, 540),
+                Size = new Size(560, 480),
                 BackColor = Color.White,
-                Location = new Point((this.ClientSize.Width - 560) / 2, (this.ClientSize.Height - 540) / 2)
+                Location = new Point((this.ClientSize.Width - 560) / 2, (this.ClientSize.Height - 480) / 2)
             };
             cardPanel.Paint += CardPanel_Paint;
             this.Controls.Add(cardPanel);
 
-            // ===== ICON BOX =====
             iconBox = new PictureBox
             {
                 Size = new Size(52, 52),
@@ -67,7 +63,6 @@ namespace ECommerece.Presentation.Forms.UserForms
             iconBox.Paint += IconBox_Paint;
             cardPanel.Controls.Add(iconBox);
 
-            // ===== TITLE =====
             lblTitle = new Label
             {
                 Text = "E-Commerce",
@@ -90,14 +85,14 @@ namespace ECommerece.Presentation.Forms.UserForms
             };
             cardPanel.Controls.Add(lblSubtitle);
 
-            // ===== NAME =====
+            // NAME
             lblName = new Label
             {
                 Text = "Full Name",
                 Font = new Font("Segoe UI", 10f),
                 ForeColor = Color.FromArgb(30, 41, 59),
                 AutoSize = true,
-                Location = new Point(48, 105),
+                Location = new Point(48, 110),
                 BackColor = Color.Transparent
             };
             cardPanel.Controls.Add(lblName);
@@ -110,16 +105,16 @@ namespace ECommerece.Presentation.Forms.UserForms
                 BackColor = Color.White,
                 BorderStyle = BorderStyle.None
             };
-            cardPanel.Controls.Add(CreateInputPanel(txtName, 48, 128));
+            cardPanel.Controls.Add(CreateInputPanel(txtName, 48, 133));
 
-            // ===== EMAIL =====
+            // EMAIL
             lblEmail = new Label
             {
                 Text = "Email",
                 Font = new Font("Segoe UI", 10f),
                 ForeColor = Color.FromArgb(30, 41, 59),
                 AutoSize = true,
-                Location = new Point(48, 198),
+                Location = new Point(48, 203),
                 BackColor = Color.Transparent
             };
             cardPanel.Controls.Add(lblEmail);
@@ -132,16 +127,16 @@ namespace ECommerece.Presentation.Forms.UserForms
                 BackColor = Color.White,
                 BorderStyle = BorderStyle.None
             };
-            cardPanel.Controls.Add(CreateInputPanel(txtEmail, 48, 221));
+            cardPanel.Controls.Add(CreateInputPanel(txtEmail, 48, 226));
 
-            // ===== PASSWORD =====
+            // PASSWORD
             lblPassword = new Label
             {
                 Text = "Password",
                 Font = new Font("Segoe UI", 10f),
                 ForeColor = Color.FromArgb(30, 41, 59),
                 AutoSize = true,
-                Location = new Point(48, 291),
+                Location = new Point(48, 296),
                 BackColor = Color.Transparent
             };
             cardPanel.Controls.Add(lblPassword);
@@ -155,50 +150,9 @@ namespace ECommerece.Presentation.Forms.UserForms
                 BorderStyle = BorderStyle.None,
                 UseSystemPasswordChar = true
             };
-            cardPanel.Controls.Add(CreateInputPanel(txtPassword, 48, 314));
+            cardPanel.Controls.Add(CreateInputPanel(txtPassword, 48, 319));
 
-            // ===== ROLE =====
-            lblRole = new Label
-            {
-                Text = "Role",
-                Font = new Font("Segoe UI", 10f),
-                ForeColor = Color.FromArgb(30, 41, 59),
-                AutoSize = true,
-                Location = new Point(48, 384),
-                BackColor = Color.Transparent
-            };
-            cardPanel.Controls.Add(lblRole);
-
-            cmbRole = new ComboBox
-            {
-                Font = new Font("Segoe UI", 11f),
-                ForeColor = Color.FromArgb(71, 85, 105),
-                BackColor = Color.White,
-                FlatStyle = FlatStyle.Flat,
-                DropDownStyle = ComboBoxStyle.DropDownList
-            };
-
-           
-            cmbRole.DataSource = Enum.GetValues(typeof(UserRoles));
-            //cmbRole.SelectedIndex = 0;
-
-            Panel rolePanel = new Panel
-            {
-                Size = new Size(464, 50),
-                Location = new Point(48, 407),
-                BackColor = Color.White
-            };
-            rolePanel.Paint += (s, e) =>
-            {
-                using (Pen pen = new Pen(Color.FromArgb(203, 213, 225), 1.5f))
-                    e.Graphics.DrawRectangle(pen, 0, 0, rolePanel.Width - 1, rolePanel.Height - 1);
-            };
-            cmbRole.Location = new Point(12, 10);
-            cmbRole.Size = new Size(440, 30);
-            rolePanel.Controls.Add(cmbRole);
-            cardPanel.Controls.Add(rolePanel);
-
-            // ===== REGISTER BUTTON =====
+            // REGISTER BUTTON
             btnRegister = new Button
             {
                 Text = "Create Account",
@@ -206,8 +160,8 @@ namespace ECommerece.Presentation.Forms.UserForms
                 ForeColor = Color.White,
                 BackColor = Color.FromArgb(59, 91, 219),
                 FlatStyle = FlatStyle.Flat,
-                Size = new Size(464, 50),
-                Location = new Point(48, 470),
+                Size = new Size(464, 52),
+                Location = new Point(48, 390),
                 Cursor = Cursors.Hand,
                 TextAlign = ContentAlignment.MiddleCenter
             };
@@ -218,7 +172,7 @@ namespace ECommerece.Presentation.Forms.UserForms
             btnRegister.Paint += BtnPaint;
             cardPanel.Controls.Add(btnRegister);
 
-            // ===== BACK TO LOGIN =====
+            // BACK TO LOGIN
             btnBackToLogin = new Button
             {
                 Text = "Already have an account? Login",
@@ -232,7 +186,7 @@ namespace ECommerece.Presentation.Forms.UserForms
             btnBackToLogin.FlatAppearance.BorderSize = 0;
             btnBackToLogin.FlatAppearance.MouseOverBackColor = Color.Transparent;
             btnBackToLogin.Click += BtnBackToLogin_Click;
-            btnBackToLogin.Location = new Point((cardPanel.Width - btnBackToLogin.PreferredSize.Width) / 2, 505);
+            btnBackToLogin.Location = new Point((cardPanel.Width - btnBackToLogin.PreferredSize.Width) / 2, 455);
             cardPanel.Controls.Add(btnBackToLogin);
         }
 
@@ -328,7 +282,7 @@ namespace ECommerece.Presentation.Forms.UserForms
                 Name = txtName.Text.Trim(),
                 Email = txtEmail.Text.Trim(),
                 Password = txtPassword.Text.Trim(),
-                Role = (UserRoles)cmbRole.SelectedItem  // ✅ صح دلوقتي
+                Role = UserRoles.Customer
             };
 
             var result = await _accountService.RegisterAsync(registerDto);
@@ -338,7 +292,8 @@ namespace ECommerece.Presentation.Forms.UserForms
                 MessageBox.Show("Account created successfully! Please login.", "Success",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                var loginForm = new LoginForm(_accountService);
+                // ✅ روح للـ LoginForm
+                var loginForm = _serviceProvider.GetRequiredService<LoginForm>();
                 loginForm.Show();
                 this.Close();
             }
@@ -354,8 +309,7 @@ namespace ECommerece.Presentation.Forms.UserForms
 
         private void BtnBackToLogin_Click(object sender, EventArgs e)
         {
-            var loginForm = new LoginForm(_accountService);
-            loginForm.Show();
+            // ✅ بس Close والـ LoginForm هترجع تلقائياً
             this.Close();
         }
     }
