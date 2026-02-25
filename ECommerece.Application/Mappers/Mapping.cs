@@ -1,16 +1,18 @@
+<<<<<<< HEAD
 ﻿using ECommerece.Application.DTOs.CategoryDto;
 
 ﻿using ECommerece.Application.DTOs.OrderDtos;
 
 ﻿using ECommerece.Application.DTOs.CategoryDto;
 
+=======
+using ECommerece.Application.DTOs.ProductDto;
+>>>>>>> 3f97830506747a615cba44e7fba9026b6c8624d7
 using ECommerece.Application.DTOs.UserDto;
 using ECommerece.Domain.Entities;
 using Mapster;
-using System;
-using System.Collections.Generic;
-using System.Net.Sockets;
-using System.Text;
+using ECommerece.Application.DTOs.OrderDtos;
+using ECommerece.Application.DTOs.CategoryDto;
 
 namespace ECommerece.Application.Mappers
 {
@@ -31,6 +33,32 @@ namespace ECommerece.Application.Mappers
 
             TypeAdapterConfig<Category, GetCategoryDto>.NewConfig()
                 .Map(dest => dest.ProductCount, src => src.Products != null ? src.Products.Count : 0);
+
+
+/*
+            Start product mapping
+            */
+            TypeAdapterConfig<Product, ProductListDto>
+                .NewConfig()
+                .Map(
+                    d => d.CategoryName,
+                    s => (s.Category != null) ? s.Category.Name : "No Category"
+                )
+                .Map(d => d.IsInStock, s => s.StockQuantity > 0);
+
+
+
+
+            TypeAdapterConfig<Product, ProductDetailsDto>
+                .NewConfig()
+                .Map(
+                    d => d.CategoryName,
+                    s => (s.Category != null) ? s.Category.Name : "No Category"
+                );
+            /*
+            End product mapping
+            */
+
         }
 
     }
