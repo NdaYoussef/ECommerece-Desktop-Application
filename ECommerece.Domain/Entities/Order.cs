@@ -10,7 +10,7 @@ namespace ECommerece.Domain.Entities
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public decimal TotalAmount { get; private set; } = 0;
 
-        public OrderStatus Status { get; private set; }= OrderStatus.Pending;
+        public OrderStatus Status { get; set; }= OrderStatus.Pending;
         public PaymentStatus paymentstatus { get; set; } = PaymentStatus.Unknown;
         public decimal ShippingCost { get; set; } 
         public string ShippingAddress { get; set; } = string.Empty;
@@ -22,42 +22,24 @@ namespace ECommerece.Domain.Entities
 
         public List<OrderItem> OrderItems { get; set; }= new List<OrderItem>();
 
-
-        //public decimal CalculateTotalAmount()
-        //{
-        //    decimal total = 0;
-        //    foreach (var item in OrderItems)
-        //    {
-        //        total += item.Quantity * item.UnitPrice;
-
-        //    }
-        //    total += ShippingCost;
-        //    if (!string.IsNullOrEmpty(discountcode))
-        //    {
-        //        // Apply discount 
-        //        total *= 0.9m; // Apply a 10% discount
-        //    }
-        //    return total;
-        //}
          
-         public OrderStatus setOrerstaus()
-        {
-            if (Status == OrderStatus.Pending)
+        public decimal CalculateTotalAmount()
             {
-                if (paymentstatus == PaymentStatus.Completed)
-                    Status = OrderStatus.Processing;
-            }
-            else if (Status == OrderStatus.Processing)
+            decimal total = 0;
+            foreach (var item in OrderItems)
             {
-              //  Thread.Sleep(2000); // Simulate processing time
-                Status = OrderStatus.Shipped;
+                total += item.Quantity * item.UnitPrice;
+
             }
-            else if (Status == OrderStatus.Shipped)
+            total += ShippingCost;
+            if (!string.IsNullOrEmpty(discountcode))
             {
-              //  Thread.Sleep(3000); // Simulate delivery time
-                Status = OrderStatus.Delivered;
+                // Apply discount 
+                total *= 0.9m; // Apply a 10% discount
             }
-            return Status;
+            return total;
         }
+
+        
     }
 }
