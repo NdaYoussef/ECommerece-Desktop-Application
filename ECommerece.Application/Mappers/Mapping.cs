@@ -29,6 +29,7 @@ namespace ECommerece.Application.Mappers
                 .Map(dest => dest.Items, src => src.CartItems);
 
             TypeAdapterConfig<CartItem, CartItemDTO>.NewConfig()
+                .Map(dest => dest.ProductId, src => src.ProductId)
                 .Map(dest => dest.ProductName, src => src.Product.Label)
                 .Map(dest => dest.ProductImage, src => src.Product.ImageUrl)
                 .Map(dest => dest.TotalPrice, src => src.Quantity * src.UnitPrice);
