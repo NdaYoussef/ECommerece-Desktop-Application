@@ -23,7 +23,7 @@ namespace ECommerece.Presentation.Forms.ProductForms
         private void InitializeComponents(ProductDetailsDto product)
         {
             this.Text = product.Label ?? "Product Details";
-            this.Size = new Size(480, 580);
+            this.Size = new Size(480, 600);
             this.StartPosition = FormStartPosition.CenterParent;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -40,6 +40,7 @@ namespace ECommerece.Presentation.Forms.ProductForms
                 SizeMode = PictureBoxSizeMode.Zoom,
                 Cursor = Cursors.Default,
             };
+
             // Draw a placeholder icon if no image loads
             picBox.Paint += (s, e) =>
             {
@@ -142,20 +143,17 @@ namespace ECommerece.Presentation.Forms.ProductForms
         }
 
         // ── Load image from URL without freezing the UI ───────────
-        private async void LoadImage(PictureBox box, string? url)
+        private async void LoadImage(PictureBox box, string? filePath)
         {
-            if (string.IsNullOrWhiteSpace(url))
+            if (string.IsNullOrWhiteSpace(filePath) || !System.IO.File.Exists(filePath))
                 return;
             try
             {
-                using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(5) };
-                var bytes = await client.GetByteArrayAsync(url);
-                using var ms = new System.IO.MemoryStream(bytes);
-                box.Image = Image.FromStream(ms);
+                using var img = Image.FromFile(filePath);
+                box.Image = new Bitmap(img);
             }
             catch
-            {
-                // URL broken or no network — placeholder stays
+            { /* broken URL — placeholder stays */
             }
         }
     }

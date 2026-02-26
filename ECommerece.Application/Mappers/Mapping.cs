@@ -1,4 +1,5 @@
-using ECommerece.Application.DTOs.ProductDto;
+﻿using ECommerece.Application.DTOs.ProductDto;
+using ECommerece.Application.DTOs;
 using ECommerece.Application.DTOs.UserDto;
 using ECommerece.Domain.Entities;
 using Mapster;
@@ -60,6 +61,7 @@ namespace ECommerece.Application.Mappers
             End product mapping
             */
 
+            TypeAdapterConfig<OrderItemDto, OrderItem>.NewConfig();
         }
 
     }

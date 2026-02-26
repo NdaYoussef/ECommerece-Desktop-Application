@@ -51,14 +51,14 @@ namespace ECommerece.Application.Services.ProductServices
         }
 
         public async Task<ProductDetailsDto?> GetProductDetails(string label)
-{
-    return (await Repository.GetProductByLabel(label))?.Adapt<ProductDetailsDto>();
-}
+        {
+            return (await Repository.GetProductByLabel(label))?.Adapt<ProductDetailsDto>();
+        }
 
-public async Task<ProductDetailsDto?> GetProductDetails(int id)
-{
-    return (await Repository.GetById(id))?.Adapt<ProductDetailsDto>();
-}
+        public async Task<ProductDetailsDto?> GetProductDetails(int id)
+        {
+            return (await Repository.GetById(id))?.Adapt<ProductDetailsDto>();
+        }
 
         public List<ProductListDto>? GetProductsByCategory(int CategoryId)
         {
