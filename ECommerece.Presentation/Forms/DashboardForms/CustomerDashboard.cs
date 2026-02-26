@@ -110,6 +110,13 @@ namespace ECommerece.Presentation.Forms.DashboardForms
                 this.Hide();
             };
 
+            btnOrders.Click += (s, e) =>
+            {
+                var orderForm = _serviceProvider.GetRequiredService<CustomerOrderManagementForm>();
+                orderForm.Show();
+                this.Hide();
+            };
+
             btnLogout = new Button
             {
                 Text = "🚪  Logout",
