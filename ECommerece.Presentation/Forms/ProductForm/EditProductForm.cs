@@ -49,7 +49,7 @@ namespace ECommerece.Presentation.Forms.ProductForms
         private void InitializeComponents()
         {
             this.Text = "Edit Product";
-            this.Size = new Size(500, 420);
+            this.Size = new Size(540, 410);
             this.StartPosition = FormStartPosition.CenterParent;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;

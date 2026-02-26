@@ -8,7 +8,7 @@ namespace ECommerece.Application.IServices.ICartService
     public interface ICartServices
     {
         Task<CartDTO> GetCartByUserIdAsync(string userId);
-        Task AddToCartAsync(string userId, AddToCartDto addToCartDto);
+        Task AddToCartAsync(string userId, AddCartItemDTO addCartItemDTO);
         Task RemoveFromCartAsync(string userId, int productId);
         Task ClearCartAsync(string userId);
         Task UpdateCartItemAsync(string userId, UpdateCartItemDto updateDto);
