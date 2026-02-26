@@ -13,13 +13,7 @@ using System.Windows.Forms;
 namespace ECommerece.WinForms.Orders
 {
     /// <summary>
-    /// Customer "My Orders" screen.
-    /// ASSUMPTIONS:
-    ///   - AppSession.CurrentUserId (int) holds the logged-in customer's ID.
-    ///   - Services are resolved via a static ServiceLocator or passed via constructor.
-    ///   - OrderStatus enum: Pending, Approved, Rejected, Processing, Shipped, Delivered, Cancelled
-    /// Adjust the constructor / session references to match your actual DI setup.
-    /// </summary>
+    
     public class CustomerOrderManagementForm : Form
     {
         // ── Services ────────────────────────────────────────────────────────────

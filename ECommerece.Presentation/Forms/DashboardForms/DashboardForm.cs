@@ -1,5 +1,6 @@
 ﻿using ECommerece.Domain.Enums;
 using ECommerece.Presentation.Forms.CategoryForms;
+using ECommerece.Presentation.Forms.OrderForms;
 using ECommerece.Presentation.Forms.UserForms;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -247,14 +248,10 @@ namespace ECommerece.Presentation.Forms.DashboardForms
                 this.Hide();
             };
             btnOrders.Click += (s, e) =>
-            {
-            
+            { 
                     var form = _serviceProvider.GetRequiredService<AdminOrderManagementForm>();
                     form.Show();
                 this.Hide();
-
-                
-                   
             };
 
         }

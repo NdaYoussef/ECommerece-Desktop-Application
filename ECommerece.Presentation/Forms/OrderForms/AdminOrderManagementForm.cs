@@ -125,12 +125,7 @@ namespace ECommerece.WinForms.Orders
                 this.Hide();
             };
 
-            btnCategories.Click += (s, e) =>
-            {
-                var categoryForm = _serviceProvider.GetRequiredService<ECommerece.Presentation.Forms.CategoryForms.CategoryForm>();
-                categoryForm.Show();
-                this.Hide();
-            };
+            
 
             pnlSidebar.Controls.Add(navPanel);
             pnlSidebar.Controls.Add(pnlLogo);
