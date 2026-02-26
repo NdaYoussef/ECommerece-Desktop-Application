@@ -90,5 +90,10 @@ namespace ECommerece.Application.Services.CategoryServices
             }
             await _categoryRepository.Delete(categoryToDelete);
         }
+        public async Task<List<string>> GetCategoriesNames()
+        {
+            var cats = await _categoryRepository.GetAll().ToListAsync();
+            return cats.Select(c => c.Name).ToList();
+        }
     }
 }

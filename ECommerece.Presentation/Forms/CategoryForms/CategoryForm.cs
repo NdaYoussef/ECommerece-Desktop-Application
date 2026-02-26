@@ -309,14 +309,6 @@ namespace ECommerece.Presentation.Forms.CategoryForms
             };
 
 
-            // product button
-            btnProducts.Click += (s, e) =>
-            {
-                var productForm = _serviceProvider.GetRequiredService<AdminProductsForm>();
-                productForm.Show();
-                this.Hide();
-            };
-
             
             btnAddCategory.Click += (s, e) =>
             {

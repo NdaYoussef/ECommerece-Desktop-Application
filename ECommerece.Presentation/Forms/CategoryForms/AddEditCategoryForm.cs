@@ -53,7 +53,7 @@ namespace ECommerece.Presentation.Forms.CategoryForms
             this.MinimizeBox = false;
             this.Font = new Font("Segoe UI", 9f);
 
-            // ===== TITLE =====
+            // TITLE 
             lblTitle = new Label
             {
                 Text = "Add New Category",
