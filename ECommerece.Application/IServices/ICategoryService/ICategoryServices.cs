@@ -13,5 +13,6 @@ namespace ECommerece.Application.IServices.ICategoryService
          Task AddCategory(AddCategoryDto CategoryDto);
          Task UpdateCategory(UpdateCategoryDto CategoryDto);
          Task DeleteCategory(int id);
+        Task<List<string>> GetCategoriesNames();
     }
 }

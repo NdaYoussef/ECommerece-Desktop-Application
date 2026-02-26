@@ -308,15 +308,8 @@ namespace ECommerece.Presentation.Forms.CategoryForms
                 this.Hide();
             };
 
-            // product button
-            btnProducts.Click += (s, e) =>
-            {
-                var productForm = _serviceProvider.GetRequiredService<AdminProductsForm>();
-                productForm.Show();
-                this.Hide();
-            };
 
-            // Add Category Button → فتح AddEditCategoryForm في Add Mode
+            
             btnAddCategory.Click += (s, e) =>
             {
                 var addForm = new AddEditCategoryForm(_categoryService);
@@ -324,7 +317,7 @@ namespace ECommerece.Presentation.Forms.CategoryForms
                 LoadCategories();
             };
 
-            // Edit & Delete Buttons في الـ Grid
+            // Edit & Delete Buttons 
             dgvCategories.CellClick += async (s, e) =>
             {
                 if (e.RowIndex < 0) return;
@@ -334,7 +327,7 @@ namespace ECommerece.Presentation.Forms.CategoryForms
                 string name = row.Cells["CategoryName"].Value.ToString();
                 string desc = row.Cells["Description"].Value.ToString();
 
-                // ✏️ Edit → فتح AddEditCategoryForm في Edit Mode
+                
                 if (dgvCategories.Columns[e.ColumnIndex].Name == "EditAction")
                 {
 
@@ -344,7 +337,7 @@ namespace ECommerece.Presentation.Forms.CategoryForms
                 }
 
 
-                // 🗑️ Delete → Confirm Dialog
+                //  Confirm Dialog
 
                 if (dgvCategories.Columns[e.ColumnIndex].Name == "DeleteAction")
                 {

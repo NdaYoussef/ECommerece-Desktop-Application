@@ -102,6 +102,7 @@ namespace ECommerece.Presentation.Forms.ProductForms
             sidebarPanel.Controls.Add(btnProducts);
             sidebarPanel.Controls.Add(btnOrders);
             sidebarPanel.Controls.Add(btnCustomers);
+
             // btnProducts.Click += btnProducts_click;
             // btnOrders.Click +=  (s,e)=> NavigateTo<OrderForm>();
             // btnCustomers.Click += (s,e)=> NavigateTo<CustomerForm>();
@@ -111,13 +112,14 @@ namespace ECommerece.Presentation.Forms.ProductForms
                 dashboardForm.Show();
                 this.Hide();
             };
+
             btnCategories.Click += (s, e) =>
             {
                 var categoryForm = _serviceProvider.GetRequiredService<CategoryForm>();
                 categoryForm.Show();
                 this.Hide();
             };
-
+            
             // Logout Button at bottom
             btnLogout = new Button
             {
