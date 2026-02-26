@@ -1,4 +1,5 @@
 ﻿using ECommerece.Application.IServices.IUserService;
+using ECommerece.Presentation.Forms.OrderForms;
 using ECommerece.Presentation.Forms.ProductForms;
 using ECommerece.Presentation.Forms.UserForms;
 using Microsoft.Extensions.DependencyInjection;
@@ -101,7 +102,12 @@ namespace ECommerece.Presentation.Forms.DashboardForms
                 productForm.Show();
                 this.Hide();
             };
-
+            btnOrders.Click += (s, e) =>
+            {
+                var form = _serviceProvider.GetRequiredService<UserForms.CustomerOrderManagementForm>();
+                form.Show();
+                this.Hide();
+            };
             btnLogout = new Button
             {
                 Text = "🚪  Logout",

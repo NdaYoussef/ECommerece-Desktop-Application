@@ -2,10 +2,12 @@ using ECommerece.Application.IRepositories;
 using ECommerece.Application.IRepositories;
 using ECommerece.Application.IServices;
 using ECommerece.Application.IServices.ICategoryService;
+using ECommerece.Application.IServices.IOrderService;
 using ECommerece.Application.IServices.IUserService;
 using ECommerece.Application.IServices.IUserService;
 using ECommerece.Application.Mappers;
 using ECommerece.Application.Services.CategoryServices;
+using ECommerece.Application.Services.OrderServices;
 using ECommerece.Application.Services.ProductServices;
 using ECommerece.Application.Services.UserServices;
 using ECommerece.Application.Services.UserServices;
@@ -16,6 +18,7 @@ using ECommerece.Infrastructure.Seed;
 using ECommerece.Presentation.Forms.CategoryForms;
 using ECommerece.Presentation.Forms.DashboardForms;
 using ECommerece.Presentation.Forms.DashboardForms;
+using ECommerece.Presentation.Forms.OrderForms;
 using ECommerece.Presentation.Forms.ProductForms;
 using ECommerece.Presentation.Forms.UserForms;
 using ECommerece.Presentation.Forms.UserForms;
@@ -73,7 +76,8 @@ namespace ECommerece.Presentation
                         services.AddTransient<AddProductForm>();
                         services.AddTransient<CustomerProductsForm>();
                         services.AddTransient<EditProductForm>();
-
+                        services.AddTransient<AdminOrderManagementForm>();
+                        services.AddTransient<CustomerOrderManagementForm>();
                         // Application Layer
                         services.AddScoped<IUserRepository, UserRepository>();
                         services.AddScoped<IAccountService, AccountService>();
@@ -81,7 +85,9 @@ namespace ECommerece.Presentation
                         services.AddScoped<ICategoryServices, CategoryService>();
                         services.AddScoped<IProductRepository, ProductRepository>();
                         services.AddScoped<IProductService, ProductService>();
-
+                        services.AddScoped<IOrderAdminService, OrderAdminService>();
+                        services.AddScoped<IOrdercustomerService, OrdercustomerService>();
+                        services.AddScoped<IOrderRepository, OrderRepository>();
                         // Infrastructure Layer
                         services.AddDbContext<ECommerceDbContext>(options =>
                             options.UseSqlServer(

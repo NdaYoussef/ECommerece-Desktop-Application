@@ -16,6 +16,12 @@
     <Compile Update="Forms\DashboardForms\DashboardForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\OrderForms\AdminOrderManagementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\OrderForms\CustomerOrderManagementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\ProductForm\AddProductForm.cs">
       <SubType>Form</SubType>
     </Compile>
