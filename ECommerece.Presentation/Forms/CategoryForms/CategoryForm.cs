@@ -1,5 +1,6 @@
 ﻿using ECommerece.Application.IServices.ICategoryService;
 using ECommerece.Presentation.Forms.DashboardForms;
+using ECommerece.Presentation.Forms.OrderForms;
 using ECommerece.Presentation.Forms.ProductForms;
 using ECommerece.Presentation.Forms.UserForms;
 using Microsoft.Extensions.DependencyInjection;
@@ -305,6 +306,12 @@ namespace ECommerece.Presentation.Forms.CategoryForms
             {
                 var productForm = _serviceProvider.GetRequiredService<AdminProductsForm>();
                 productForm.Show();
+                this.Hide();
+            };
+            btnOrders.Click += (s, e) =>
+            {
+                var orderForm = _serviceProvider.GetRequiredService<AdminOrderManagementForm>();
+                orderForm.Show();
                 this.Hide();
             };
 

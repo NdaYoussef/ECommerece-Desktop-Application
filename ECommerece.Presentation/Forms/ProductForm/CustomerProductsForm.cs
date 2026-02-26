@@ -123,6 +123,18 @@ namespace ECommerece.Presentation.Forms.ProductForms
                 dash.Show();
                 this.Hide();
             };
+            btnOrders.Click += (s, e) =>
+            {
+                var dash = _serviceProvider.GetRequiredService<CustomerOrderManagementForm>();
+                dash.Show();
+                this.Hide();
+            };
+            btnCart.Click += (s, e) =>
+            {
+                var dash = _serviceProvider.GetRequiredService<CartForm>();
+                dash.Show();
+                this.Hide();
+            };
 
             // Logout Button
             btnLogout = new Button
