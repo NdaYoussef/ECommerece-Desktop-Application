@@ -12,73 +12,66 @@ namespace ECommerece.Application.Services.CartServices
 {
     public class CartService : ICartServices
     {
-        public ICartRepository _cartRepository;
-        public IGenericRepository<Product, int> _productRepository;
+        private readonly ICartRepository _cartRepository;
+        private readonly ICartItemRepository _cartItemRepository;
 
-        public CartService(ICartRepository cartRepository,
-                           IGenericRepository<Product, int> productRepository)
+        public CartService(ICartRepository cartRepository, ICartItemRepository cartItemRepository)
         {
             _cartRepository = cartRepository;
-            _productRepository = productRepository;
+            _cartItemRepository = cartItemRepository;
         }
 
-        public async Task AddToCartAsync(string userId, AddToCartDto addToCartDto)
+        public async Task AddToCartAsync(string userId, AddCartItemDTO addCartItemDTO)
         {
+            // 1. Get existing cart or create a new one
             var cart = await _cartRepository.GetAll()
-                .Include(c => c.CartItems)
                 .FirstOrDefaultAsync(c => c.UserId == userId);
 
             if (cart == null)
             {
-                cart = new Cart
-                {
-                    UserId = userId,
-                    CartItems = new List<CartItem>()
-                };
+                cart = new Cart { UserId = userId };
                 await _cartRepository.Add(cart);
+                await _cartRepository.SaveChangesAsync(); // flush to get cart.Id
             }
 
-            var existingItem = cart.CartItems
-                .FirstOrDefault(ci => ci.ProductId == addToCartDto.ProductId);
+            // 2. Check if this product is already in the cart
+            var existingItem = await _cartItemRepository
+                .GetByCartAndProductAsync(cart.Id, addCartItemDTO.ProductId);
 
             if (existingItem != null)
             {
-                existingItem.Quantity += addToCartDto.Quantity;
+                // 3a. Already exists — increment quantity only
+                existingItem.Quantity += addCartItemDTO.Quantity;
+                await _cartItemRepository.Update(existingItem);
             }
             else
             {
-                var product = await _productRepository.GetById(addToCartDto.ProductId);
-
-                if (product == null)
-                    throw new Exception("Product not found");
-
-                cart.CartItems.Add(new CartItem
-                {
-                    ProductId = addToCartDto.ProductId,
-                    Quantity = addToCartDto.Quantity,
-                    UnitPrice = product.Price
-                });
+                // 3b. New item — map DTO to entity and assign CartId
+                var newItem = addCartItemDTO.Adapt<CartItem>();
+                newItem.CartId = cart.Id;
+                await _cartItemRepository.Add(newItem);
             }
 
-            await _cartRepository.SaveChangesAsync();
+            await _cartItemRepository.SaveChangesAsync();
         }
 
         public async Task RemoveFromCartAsync(string userId, int productId)
         {
             var cart = await _cartRepository.GetAll()
-                .Include(c => c.CartItems)
                 .FirstOrDefaultAsync(c => c.UserId == userId);
 
-            if (cart != null)
+            if (cart == null) return;
+
+            var item = await _cartItemRepository
+                .GetByCartAndProductAsync(cart.Id, productId);
+
+            if (item != null)
             {
-                var item = cart.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
-                if (item != null)
-                {
-                    cart.CartItems.Remove(item);
-                    await _cartRepository.SaveChangesAsync();
-                }
+                await _cartItemRepository.Delete(item);
+                await _cartItemRepository.SaveChangesAsync();
             }
         }
+
 
         public async Task ClearCartAsync(string userId)
         {
@@ -86,11 +79,12 @@ namespace ECommerece.Application.Services.CartServices
                 .Include(c => c.CartItems)
                 .FirstOrDefaultAsync(c => c.UserId == userId);
 
-            if (cart != null)
-            {
-                cart.CartItems.Clear();
-                await _cartRepository.SaveChangesAsync();
-            }
+            if (cart == null) return;
+
+            foreach (var item in cart.CartItems.ToList())
+                await _cartItemRepository.Delete(item);
+
+            await _cartItemRepository.SaveChangesAsync();
         }
 
         public async Task<CartDTO> GetCartByUserIdAsync(string userId)
@@ -100,27 +94,20 @@ namespace ECommerece.Application.Services.CartServices
                 .ThenInclude(ci => ci.Product)
                 .FirstOrDefaultAsync(c => c.UserId == userId);
 
-            if (cart == null)
-                return null;
+            if (cart == null) return null;
 
             return cart.Adapt<CartDTO>();
         }
 
         public async Task UpdateCartItemAsync(string userId, UpdateCartItemDto updateDto)
         {
-            var cart = await _cartRepository.GetAll()
-                .Include(c => c.CartItems)
-                .FirstOrDefaultAsync(c => c.UserId == userId);
+            var cartItem = await _cartItemRepository.GetById(updateDto.CartItemId);
 
-            if (cart != null)
-            {
-                var item = cart.CartItems.FirstOrDefault(ci => ci.Id == updateDto.CartItemId);
-                if (item != null)
-                {
-                    item.Quantity = updateDto.NewQuantity;
-                    await _cartRepository.SaveChangesAsync();
-                }
-            }
+            if (cartItem == null) return;
+
+            cartItem.Quantity = updateDto.NewQuantity;
+            await _cartItemRepository.Update(cartItem);
+            await _cartItemRepository.SaveChangesAsync();
         }
 
     }

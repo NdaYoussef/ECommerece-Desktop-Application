@@ -1,10 +1,12 @@
 using ECommerece.Application.IRepositories;
 using ECommerece.Application.IRepositories;
 using ECommerece.Application.IServices;
+using ECommerece.Application.IServices.ICartService;
 using ECommerece.Application.IServices.ICategoryService;
 using ECommerece.Application.IServices.IUserService;
 using ECommerece.Application.IServices.IUserService;
 using ECommerece.Application.Mappers;
+using ECommerece.Application.Services.CartServices;
 using ECommerece.Application.Services.CategoryServices;
 using ECommerece.Application.Services.ProductServices;
 using ECommerece.Application.Services.UserServices;
@@ -73,6 +75,7 @@ namespace ECommerece.Presentation
                         services.AddTransient<AddProductForm>();
                         services.AddTransient<CustomerProductsForm>();
                         services.AddTransient<EditProductForm>();
+                        services.AddTransient<CartForm>();
 
                         // Application Layer
                         services.AddScoped<IUserRepository, UserRepository>();
@@ -81,6 +84,9 @@ namespace ECommerece.Presentation
                         services.AddScoped<ICategoryServices, CategoryService>();
                         services.AddScoped<IProductRepository, ProductRepository>();
                         services.AddScoped<IProductService, ProductService>();
+                        services.AddScoped<ICartRepository, CartRepository>();
+                        services.AddScoped<ICartItemRepository, CartItemRepository>();
+                        services.AddScoped<ICartServices, CartService>();
 
                         // Infrastructure Layer
                         services.AddDbContext<ECommerceDbContext>(options =>

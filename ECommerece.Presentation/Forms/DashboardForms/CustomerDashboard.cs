@@ -1,4 +1,5 @@
 ﻿using ECommerece.Application.IServices.IUserService;
+//using ECommerece.Presentation.Forms.CartForms;
 using ECommerece.Presentation.Forms.ProductForms;
 using ECommerece.Presentation.Forms.UserForms;
 using Microsoft.Extensions.DependencyInjection;
@@ -99,6 +100,13 @@ namespace ECommerece.Presentation.Forms.DashboardForms
             {
                 var productForm = _serviceProvider.GetRequiredService<CustomerProductsForm>();
                 productForm.Show();
+                this.Hide();
+            };
+
+            btnCart.Click += (s, e) =>
+            {
+                var cartForm = _serviceProvider.GetRequiredService<CartForm>();
+                cartForm.Show();
                 this.Hide();
             };
 
